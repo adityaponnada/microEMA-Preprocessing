@@ -33,3 +33,8 @@ uEMA01Responses$PROMPT_TIME <- as.POSIXct(uEMA01Responses$PROMPT_TIME, format = 
 class(uEMA01Responses$PROMPT_TIME)
 class(uEMA01Responses$ANSWER_TIME)
 
+#### Filter a data frame with only responded prompts
+uEMA01AnsweredPrompts <- uEMA01Responses[!uEMA01Responses$ACTIVITY_TYPE == "MISSED", ]
+uEMA01AnsweredPrompts <- uEMA01Responses[!uEMA01Responses$ACTIVITY_TYPE == "DISMISSED", ]
+head(uEMA01AnsweredPrompts)
+levels(uEMA01AnsweredPrompts$ACTIVITY_TYPE)
