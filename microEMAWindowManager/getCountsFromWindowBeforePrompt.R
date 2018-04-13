@@ -21,3 +21,15 @@ uEMA01Responses <- uEMAAllResponses[uEMAAllResponses$USER_ID == "uema01@micropa_
 head(uEMA01Responses)
 tail(uEMA01Responses)
 nrow(uEMA01Responses)
+
+
+#### Keep only relevant columns
+uEMA01Responses <- uEMA01Responses[, c("USER_ID", "PROMPT_TIME", "ANSWER_TIME", "RESPONSE_TIME", "ACTIVITY_TYPE")]
+head(uEMA01Responses)
+
+#### Convert all the date time columns into date time objects
+uEMA01Responses$ANSWER_TIME <- as.POSIXct(uEMA01Responses$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
+uEMA01Responses$PROMPT_TIME <- as.POSIXct(uEMA01Responses$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
+class(uEMA01Responses$PROMPT_TIME)
+class(uEMA01Responses$ANSWER_TIME)
+
