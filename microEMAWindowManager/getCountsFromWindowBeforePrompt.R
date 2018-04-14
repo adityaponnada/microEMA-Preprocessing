@@ -34,8 +34,14 @@ class(uEMA01Responses$PROMPT_TIME)
 class(uEMA01Responses$ANSWER_TIME)
 
 #### Filter a data frame with only responded prompts
-uEMA01AnsweredPrompts <- uEMA01Responses[!uEMA01Responses$ACTIVITY_TYPE == "MISSED", ]
-uEMA01AnsweredPrompts <- uEMA01Responses[!uEMA01Responses$ACTIVITY_TYPE == "DISMISSED", ]
+#uEMA01AnsweredPrompts <- uEMA01Responses[!uEMA01Responses$ACTIVITY_TYPE == "MISSED", ]
+#uEMA01AnsweredPrompts <- uEMA01Responses[!uEMA01Responses$ACTIVITY_TYPE == "DISMISSED", ]
+toMatch <- c("MISSED", "DISMISSED")
+uEMA01AnsweredPrompts <- uEMA01Responses[- grep(paste(toMatch,collapse="|"), 
+                                                uEMA01Responses$ACTIVITY_TYPE),]
+
+uEMA01AnsweredPrompts <- subset(uEMA01AnsweredPrompts, ANSWER_TIME < "2018-02-09 23:00:00")
+
 head(uEMA01AnsweredPrompts)
 levels(uEMA01AnsweredPrompts$ACTIVITY_TYPE)
 
@@ -87,8 +93,76 @@ colnames(uEMA01WristCounts)[2] <- "COUNTS_MAGNITUDE_WRIST"
 head(uEMA01WristCounts)
 
 #### get windowed avergaes from the time before the promt
-timebefore = 60
+##getCountsBeforeTime <- function()
+timeBefore = 60
 
+combinedAnkleEMA <- uEMA01AnsweredPrompts
+combinedAnkleEMA$COUNTS_AVERAGE_ANKLE_BEFORE <- NA
+#combinedAnkleEMA[1,]$COUNTS_AVERAGE_ANKLE_BEFORE <- 0
+
+
+###################### Raw code ###################
+
+k=0
+
+for (i in 1:nrow(uEMA01AnsweredPrompts)){
+  print(paste0("Starting with the uEMA index: ", i))
+  uEMAPickedRow <- uEMA01AnsweredPrompts[i,]
+  
+  k = k+1
+  
+  if (k > nrow(uEMA01AnkleCounts)){
+    print("Maxed out in the second file ... exiting")
+    break
+    
+  }
+  print("creating a temporary data frame")
+  tempDataFrame = data.frame()
+  
+  for (j in k:nrow(uEMA01AnkleCounts)){
+    print(paste0("Starting with the second file index: ", j, " and k is: ", k))
+    
+    countsPickedRow <- uEMA01AnkleCounts[j,]
+    
+    timeDifference = difftime(uEMAPickedRow$ANSWER_TIME, countsPickedRow$DATE_TIME_ANKLE,   units = "secs")
+    print(paste0("The time difference is: ", timeDifference))
+    
+    if (timeDifference <= timeBefore & timeDifference >= 0){
+      
+      print(paste0("Time difference is within the range at ", "j = ", j, " k = ", k, " for i = ", i))
+      
+      ## Add all these rows in a temporary data frame
+      tempDataFrame <- rbind(tempDataFrame, countsPickedRow)
+      print("Get average counts")
+      
+      countsAverage = sum(tempDataFrame$COUNTS_MAGNITUDE_ANKLE)
+      print("Assign average as a new column")
+      
+      print(paste0("CountsAverage is: ", countsAverage))
+      
+      combinedAnkleEMA$COUNTS_AVERAGE_ANKLE_BEFORE[i] <- countsAverage
+      #tempAverages[i,] <- i
+      k = j
+     
+      
+    } else if (timeDifference < 0) {
+      print("Time difference negative ... exiting")
+      
+      break
+    }
+    
+    
+  }
+  
+  print(paste0("i is: ", i))
+  
+}
+
+#tempMicroEMA$COUNTS_AVERAGE_ANKLE_BEFORE <- tempAverages
+
+head(combinedAnkleEMA)
+
+#### get windows for wrist counts
 
 
 
