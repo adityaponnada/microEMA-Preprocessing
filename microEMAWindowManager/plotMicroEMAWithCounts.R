@@ -107,3 +107,24 @@ ggplotWristCounts_after
 
 multiplot(ggplotAnkleCounts_before, ggplotAnkleCounts_after, ggplotWristCounts_before, ggplotWristCounts_after, ggplotuEMAResponses, rows = 5)
 
+
+#### Interactive plots comparing uEMA responses and the counts
+
+mAnkleCounts_before <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_AVERAGE_ANKLE_BEFORE, name = "ANKLE_COUNTS_BEFORE", 
+                        legendgroup = "ANKLE", type = "bar")
+mAnkleCounts_after <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_AVERAGE_ANKLE_AFTER, name = "ANKLE_COUNTS_AFTER", 
+                               legendgroup = "ANKLE", type = "bar")
+
+mWristCounts_before <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_AVERAGE_WRIST_BEFORE, name = "WRIST_COUNTS_BEFORE", 
+                               legendgroup = "WRIST", type = "bar")
+mWristCounts_after <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_AVERAGE_WRIST_AFTER, name = "WRIST_COUNTS_AFTER", 
+                               legendgroup = "WRIST", type = "bar")
+
+mEMAResponsesPlot <- plot_ly(countsEMADataFrame, x=~ANSWER_TIME, y=~ACTIVITY_NUMERIC, name = "uEMA_RESPONSES", 
+                             legendgroup = "uEMA", type = "bar")##%>% layout(xaxis = list(range = as.POSIXct(c('2018-02-02 00:00:00', '2018-02-09 23:00:00'))))
+
+subplot(style(mAnkleCounts_before, showlegend = TRUE), style(mAnkleCounts_after, showlegend = TRUE),
+        style(mWristCounts_before, showlegend = TRUE), style(mWristCounts_after, showlegend = TRUE),
+        style(mEMAResponsesPlot, showlegend = TRUE), nrows = 5, margin = 0.05)
+
+
