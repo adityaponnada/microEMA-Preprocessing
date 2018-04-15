@@ -1,0 +1,78 @@
+## Import libraries
+
+library(psych)
+library(ggplot2)
+library(plotly)
+library(MASS)
+library(plyr)
+options(digits.secs=3)
+
+head(combinedAnkleEMA)
+head(combinedWristEMA)
+
+###### get counts after a certain period from uEMA time stamp - Ankle ######
+
+timeAfter = 60
+combinedWristEMA$COUNTS_AVERAGE_WRIST_AFTER <- NA
+
+# tempMicroEMA <- head(combinedAnkleEMA, 10)
+# tempCounts <- head(uEMA01AnkleCounts, 6000)
+
+k=0
+
+for (i in 1:nrow(uEMA01AnsweredPrompts)){
+  print(paste0("Starting with the uEMA index: ", i))
+  uEMAPickedRow <- uEMA01AnsweredPrompts[i,]
+  
+  k = k+1
+  
+  if (k > nrow(uEMA01WristCounts)){
+    print("Maxed out in the second file ... exiting")
+    break
+    
+  }
+  print("creating a temporary data frame")
+  tempDataFrame = data.frame()
+  
+  for (j in k:nrow(uEMA01WristCounts)){
+    print(paste0("Starting with the second file index: ", j, " and k is: ", k))
+    
+    countsPickedRow <- uEMA01WristCounts[j,]
+    
+    timeDifference = difftime(countsPickedRow$DATE_TIME_ANKLE, uEMAPickedRow$ANSWER_TIME, units = "secs")
+    print(paste0("The time difference is: ", timeDifference))
+    
+    if (timeDifference <= timeAfter & timeDifference >= 0){
+      
+      print(paste0("Time difference is within the range at ", "j = ", j, " k = ", k, " for i = ", i))
+      
+      ## Add all these rows in a temporary data frame
+      tempDataFrame <- rbind(tempDataFrame, countsPickedRow)
+      print("Get average counts")
+      
+      countsSum = sum(tempDataFrame$COUNTS_MAGNITUDE_WRIST)
+      print("Assign average as a new column")
+      
+      print(paste0("CountsAverage is: ", countsSum))
+      
+      combinedWristEMA$COUNTS_AVERAGE_WRIST_AFTER[i] <- countsSum
+      #tempAverages[i,] <- i
+      k = j
+      
+      
+    } else if (timeDifference > 60) {
+      print("Time difference exceeding the range ... exiting")
+      
+      break
+    }
+    
+    
+  }
+  
+  print(paste0("i is: ", i))
+  
+}
+
+#tempMicroEMA$COUNTS_AVERAGE_ANKLE_BEFORE <- tempAverages
+
+head(combinedWristEMA)
