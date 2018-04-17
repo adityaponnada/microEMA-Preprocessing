@@ -190,3 +190,25 @@ uEMA_plot <- ggplot(uEMA01AnsweredPrompts, aes(ANSWER_TIME, ACTIVITY_NUMERIC)) +
 uEMA_plot
 
 multiplot(Ankle_plot, Wrist_plot, uEMA_plot, rows = 3)
+
+Ankle_segment <- ggplot(uEMA01AnkleCounts, aes(DATE_TIME_ANKLE, COUNTS_MAGNITUDE_ANKLE)) + 
+  geom_bar(stat="identity", fill = "deeppink3") + xlab("Date-Time") + ylab("Ankle counts") +
+  ggtitle("Ankle counts 1s interval") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 10)) +
+  theme(text = element_text(size=10)) +
+  scale_x_datetime(limits = as.POSIXct(c('2018-02-07 10:15:00', '2018-02-07 10:45:00')))
+
+uEMAPlot_segment <- ggplot(countsEMADataFrame, aes(ANSWER_TIME, ACTIVITY_NUMERIC)) + 
+  geom_bar(stat="identity", fill = "grey14") + xlab("Date-Time") + ylab("uEMA responses") +
+  ggtitle("Responses on uEMA prompts") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 10)) +
+  theme(text = element_text(size=10))+
+  scale_x_datetime(limits = as.POSIXct(c('2018-02-07 10:15:00', '2018-02-07 10:45:00')))
+
+
+multiplot(Ankle_segment, uEMAPlot_segment, rows = 2)
+
+
+
+
+
