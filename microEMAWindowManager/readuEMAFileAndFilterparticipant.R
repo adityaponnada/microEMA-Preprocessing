@@ -6,39 +6,54 @@ library(MASS)
 library(plyr)
 options(digits.secs=3)
 
+## Read uEMA file
+uEMAAllResponses <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/Responses_uEMA/uEMAPromptResponses.csv", 
+                                                sep = ",", header = TRUE)
+
+nrow(uEMAAllResponses)
+head(uEMAAllResponses)
+
+#### uEMA participant file data frame format should be "uEMAnResponses" and "uEMAnnAnsweredPrompts"
+
+username = "uema01@micropa_com"
+endTime = as.POSIXct("2018-02-09 23:00:00")
+class(endTime)
+
 #### get a specific participant from 
-uEMA02Responses <- uEMAAllResponses[uEMAAllResponses$USER_ID == "uema02@micropa_com",]
-head(uEMA02Responses)
-tail(uEMA02Responses)
-nrow(uEMA02Responses)
+uEMAParticipantResponses <- uEMAAllResponses[uEMAAllResponses$USER_ID == username,]
+head(uEMAParticipantResponses)
+tail(uEMAParticipantResponses)
+nrow(uEMAParticipantResponses)
 
 #### Keep only relevant columns
-uEMA02Responses <- uEMA02Responses[, c("USER_ID", "PROMPT_TIME", "ANSWER_TIME", "RESPONSE_TIME", "ACTIVITY_TYPE")]
-head(uEMA02Responses)
+uEMAParticipantResponses <- uEMAParticipantResponses[, c("USER_ID", "PROMPT_TIME", "ANSWER_TIME", "RESPONSE_TIME", "ACTIVITY_TYPE")]
+head(uEMAParticipantResponses)
 
-uEMA02Responses$ANSWER_TIME <- as.POSIXct(uEMA02Responses$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
-uEMA02Responses$PROMPT_TIME <- as.POSIXct(uEMA02Responses$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
-class(uEMA02Responses$PROMPT_TIME)
-class(uEMA02Responses$ANSWER_TIME)
+uEMAParticipantResponses$ANSWER_TIME <- as.POSIXct(uEMAParticipantResponses$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
+uEMAParticipantResponses$PROMPT_TIME <- as.POSIXct(uEMAParticipantResponses$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
+class(uEMAParticipantResponses$PROMPT_TIME)
+class(uEMAParticipantResponses$ANSWER_TIME)
 
 toMatch <- c("MISSED", "DISMISSED")
-uEMA02AnsweredPrompts <- uEMA02Responses[- grep(paste(toMatch,collapse="|"), 
-                                                uEMA02Responses$ACTIVITY_TYPE),]
+uEMAParticipantAnsweredPrompts <- uEMAParticipantResponses[- grep(paste(toMatch,collapse="|"), 
+                                                                  uEMAParticipantResponses$ACTIVITY_TYPE),]
 
-uEMA02AnsweredPrompts <- subset(uEMA02AnsweredPrompts, ANSWER_TIME < "2018-02-14 23:00:00")
+uEMAParticipantAnsweredPrompts <- subset(uEMAParticipantAnsweredPrompts, ANSWER_TIME < endTime)
 
-head(uEMA02AnsweredPrompts)
-levels(uEMA02AnsweredPrompts$ACTIVITY_TYPE)
+head(uEMAParticipantAnsweredPrompts)
+levels(uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE)
 
-uEMA02AnsweredPrompts$ACTIVITY_CODED[uEMA02AnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "1000"
-uEMA02AnsweredPrompts$ACTIVITY_CODED[uEMA02AnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "1500"
-uEMA02AnsweredPrompts$ACTIVITY_CODED[uEMA02AnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "4000"
-uEMA02AnsweredPrompts$ACTIVITY_CODED[uEMA02AnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "8000"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "1000"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "1500"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "4000"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "8000"
 
-uEMA02AnsweredPrompts$ANSWER_TIME <- as.POSIXct(uEMA02AnsweredPrompts$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
-uEMA02AnsweredPrompts$PROMPT_TIME <- as.POSIXct(uEMA02AnsweredPrompts$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
+uEMAParticipantAnsweredPrompts$ANSWER_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
+uEMAParticipantAnsweredPrompts$PROMPT_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
 
-uEMA02AnsweredPrompts$ACTIVITY_NUMERIC <- as.numeric(as.character(uEMA02AnsweredPrompts$ACTIVITY_CODED))
-head(uEMA02AnsweredPrompts)
+class(uEMAParticipantAnsweredPrompts$ANSWER_TIME)
 
-class(uEMA02AnsweredPrompts$ACTIVITY_NUMERIC)
+uEMAParticipantAnsweredPrompts$ACTIVITY_NUMERIC <- as.numeric(as.character(uEMAParticipantAnsweredPrompts$ACTIVITY_CODED))
+head(uEMAParticipantAnsweredPrompts)
+
+class(uEMAParticipantAnsweredPrompts$ACTIVITY_NUMERIC)
