@@ -79,7 +79,7 @@ for (i in 1:nrow(annotationFile)){
 head(annotationFile)
 
 #### Add time difference
-annotationFile$DURATION <- difftime(annotationFile$HEADER_STOP_TIME,annotationFile$HEADER_START_TIME, units = "secs" )
+annotationFile$DURATION <- as.numeric(difftime(annotationFile$HEADER_STOP_TIME,annotationFile$HEADER_START_TIME, units = "secs" ))
   
 ### Get subset with only meaningful labels
 toBeRemoved<-which(annotationFile$CATEGORY=="Not Sure")
