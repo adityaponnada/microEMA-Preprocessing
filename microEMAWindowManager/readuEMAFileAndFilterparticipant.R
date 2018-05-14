@@ -56,4 +56,7 @@ class(uEMAParticipantAnsweredPrompts$ANSWER_TIME)
 uEMAParticipantAnsweredPrompts$ACTIVITY_NUMERIC <- as.numeric(as.character(uEMAParticipantAnsweredPrompts$ACTIVITY_CODED))
 head(uEMAParticipantAnsweredPrompts)
 
+uEMAParticipantAnsweredPrompts$RESPONSE_TIME <- as.numeric(uEMAParticipantAnsweredPrompts$RESPONSE_TIME)
+
 class(uEMAParticipantAnsweredPrompts$ACTIVITY_NUMERIC)
+class(uEMAParticipantAnsweredPrompts$RESPONSE_TIME)

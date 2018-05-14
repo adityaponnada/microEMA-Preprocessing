@@ -40,7 +40,7 @@ for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
     
     countsPickedRow <- uEMAAnkleCounts[j,]
     
-    timeDifference = difftime(countsPickedRow$DATE_TIME_ANKLE, uEMAPickedRow$ANSWER_TIME, units = "secs")
+    timeDifference = difftime(countsPickedRow$DATE_TIME_ANKLE, uEMAPickedRow$PROMPT_TIME, units = "secs")
     print(paste0("The time difference is: ", timeDifference))
     
     if (timeDifference <= timeAfter & timeDifference >= 0){
@@ -61,7 +61,7 @@ for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
       k = j
       
       
-    } else if (timeDifference > 60) {
+    } else if (timeDifference > timeAfter) {
       print("Time difference exceeding the range ... exiting")
       
       break
@@ -110,7 +110,7 @@ for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
     
     countsPickedRow <- uEMAWristCounts[j,]
     
-    timeDifference = difftime(countsPickedRow$DATE_TIME_ANKLE, uEMAPickedRow$ANSWER_TIME, units = "secs")
+    timeDifference = difftime(countsPickedRow$DATE_TIME_ANKLE, uEMAPickedRow$PROMPT_TIME, units = "secs")
     print(paste0("The time difference is: ", timeDifference))
     
     if (timeDifference <= timeAfter & timeDifference >= 0){
@@ -131,7 +131,7 @@ for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
       k = j
       
       
-    } else if (timeDifference > 60) {
+    } else if (timeDifference > timeAfter) {
       print("Time difference exceeding the range ... exiting")
       
       break
