@@ -15,6 +15,8 @@ head(countsEMADataFrame)
 
 countsEMADataFrame$PROMPTED <- 500
 
+#countsEMADataFrame$RESPONSE_TIME <- as.numeric(countsEMADataFrame$RESPONSE_TIME)
+
 multiplot <- function(..., plotlist=NULL, file, rows=1, layout=NULL) {
   library(grid)
   
@@ -99,23 +101,28 @@ multiplot <- function(..., plotlist=NULL, file, rows=1, layout=NULL) {
 
 #### Interactive plots comparing uEMA responses and the counts
 
-pAnkleBefore <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_SUM_ANKLE_BEFORE, name = "ANKLE_COUNTS_BEFORE", 
+pAnkleBefore <- plot_ly(countsEMADataFrame, x = ~PROMPT_TIME, y= ~COUNTS_SUM_ANKLE_BEFORE, name = "ANKLE_COUNTS_BEFORE", 
                         legendgroup = "ANKLE", type = "bar")
-pAnkleAfter <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_SUM_ANKLE_AFTER, name = "ANKLE_COUNTS_AFTER", 
+pAnkleAfter <- plot_ly(countsEMADataFrame, x = ~PROMPT_TIME, y= ~COUNTS_SUM_ANKLE_AFTER, name = "ANKLE_COUNTS_AFTER", 
                         legendgroup = "ANKLE", type = "bar")
-pAnkleTotal <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~TOTAL_ANKLE_COUNTS, name = "ANKLE_COUNTS_TOTAL", 
+pAnkleTotal <- plot_ly(countsEMADataFrame, x = ~PROMPT_TIME, y= ~TOTAL_ANKLE_COUNTS, name = "ANKLE_COUNTS_TOTAL", 
                         legendgroup = "ANKLE", type = "bar")
 
-pWristBefore <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_SUM_WRIST_BEFORE, name = "WRIST_COUNTS_BEFORE", 
+pWristBefore <- plot_ly(countsEMADataFrame, x = ~PROMPT_TIME, y= ~COUNTS_SUM_WRIST_BEFORE, name = "WRIST_COUNTS_BEFORE", 
                         legendgroup = "WRIST", type = "bar")
-pWristAfter <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~COUNTS_SUM_WRIST_AFTER, name = "WRIST_COUNTS_AFTER", 
+pWristAfter <- plot_ly(countsEMADataFrame, x = ~PROMPT_TIME, y= ~COUNTS_SUM_WRIST_AFTER, name = "WRIST_COUNTS_AFTER", 
                         legendgroup = "WRIST", type = "bar")
-pWristTotal <- plot_ly(countsEMADataFrame, x = ~ANSWER_TIME, y= ~TOTAL_WRIST_COUNTS, name = "WRIST_COUNTS_TOTAL", 
+pWristTotal <- plot_ly(countsEMADataFrame, x = ~PROMPT_TIME, y= ~TOTAL_WRIST_COUNTS, name = "WRIST_COUNTS_TOTAL", 
                         legendgroup = "WRIST", type = "bar")
 
-pEMAResponses <- plot_ly(countsEMADataFrame, x=~ANSWER_TIME, y=~ACTIVITY_NUMERIC, name = "uEMA_RESPONSES", 
+pEMAResponses <- plot_ly(countsEMADataFrame, x=~PROMPT_TIME, y=~ACTIVITY_NUMERIC, name = "uEMA_RESPONSES", 
                              legendgroup = "uEMA", type = "bar")##%>% layout(xaxis = list(range = as.POSIXct(c('2018-02-02 00:00:00', '2018-02-09 23:00:00'))))
-pPromptTimes <- plot_ly(countsEMADataFrame, x=~PROMPT_TIME, y=~PROMPTED, name = "uEMA_Prompts",
+
+pEMAresponseTime <- plot_ly(countsEMADataFrame, x=~PROMPT_TIME, y=~RESPONSE_TIME, name = "RESPONSE_TIME",
+                            legendgroup = "uEMA", type = "bar")
+
+
+pPromptTimes <- plot_ly(countsEMADataFrame, x=~ANSWER_TIME, y=~PROMPTED, name = "uEMA_Prompts",
                         legendgroup = "uEMA", marker = list(size = 10,
                        color = 'rgba(255, 182, 193, .9)',
                        line = list(color = 'rgba(152, 0, 0, .8)',
@@ -123,8 +130,8 @@ pPromptTimes <- plot_ly(countsEMADataFrame, x=~PROMPT_TIME, y=~PROMPTED, name = 
     title = username)
 
 subplot(style(pAnkleBefore, showlegend = TRUE), style(pAnkleAfter, showlegend = TRUE),
-        style(pAnkleTotal, showlegend = TRUE), 
-        style(pEMAResponses, showlegend = TRUE),style(pPromptTimes, showlegend = TRUE),
+        style(pEMAResponses, showlegend = TRUE),
+        style(pEMAresponseTime, showlegend = TRUE),style(pPromptTimes, showlegend = TRUE),
         nrows = 5, margin = 0.05, shareX = TRUE)
 
 

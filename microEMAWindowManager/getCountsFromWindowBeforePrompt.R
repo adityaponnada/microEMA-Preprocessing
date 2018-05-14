@@ -123,7 +123,7 @@ for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
     
     countsPickedRow <- uEMAAnkleCounts[j,]
     
-    timeDifference = difftime(uEMAPickedRow$ANSWER_TIME, countsPickedRow$DATE_TIME_ANKLE,   units = "secs")
+    timeDifference = difftime(uEMAPickedRow$PROMPT_TIME, countsPickedRow$DATE_TIME_ANKLE,   units = "secs")
     print(paste0("The time difference is: ", timeDifference))
     
     if (timeDifference <= timeBefore & timeDifference >= 0){
@@ -193,7 +193,7 @@ for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
     
     countsPickedRow <- uEMAWristCounts[j,]
     
-    timeDifference = difftime(uEMAPickedRow$ANSWER_TIME, countsPickedRow$DATE_TIME_ANKLE,   units = "secs")
+    timeDifference = difftime(uEMAPickedRow$PROMPT_TIME, countsPickedRow$DATE_TIME_ANKLE,   units = "secs")
     print(paste0("The time difference is: ", timeDifference))
     
     if (timeDifference <= timeBefore & timeDifference >= 0){
