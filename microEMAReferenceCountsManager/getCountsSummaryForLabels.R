@@ -32,4 +32,6 @@ for (i in 1:nrow(annotationFile)){
 
 head(annotationFile)
 
+outPathSummary = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_1/LabCountsCombined.csv"
 
+write.csv(file = outPathSummary, x = annotationFile, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
