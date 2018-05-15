@@ -8,7 +8,7 @@ library(plotly)
 
 #### Read SPADES Ankle data file
 
-spadesAnklePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_1/Spades_1_JJ_Ankle_Dominant (2015-09-24)1secDataTable.csv"
+spadesAnklePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_25/SPADES_25_DOMINANTANKLE (2016-02-16)1secDataTable.csv"
 
 
 spadesAnkle <- read.csv(spadesAnklePath, sep = ",", header = TRUE)
@@ -25,7 +25,7 @@ head(spadesAnkle)
 
 #### Read SPADES Ankle data file
 
-spadesWristPath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_1/Spades_1_Wrist_Dominant (2015-09-24)1secDataTable.csv"
+spadesWristPath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_25/SPADES_25_DOMINANTWRIST (2016-02-16)1secDataTable.csv"
 
 
 spadesWrist <- read.csv(spadesWristPath, sep = ",", header = TRUE)

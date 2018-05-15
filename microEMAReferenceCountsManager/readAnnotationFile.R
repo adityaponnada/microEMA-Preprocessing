@@ -7,7 +7,7 @@ library(plotly)
 
 ### read the annotation file for the participant
 
-annotationPath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_1/SPADES_1_SPADESInLab_merged.csv"
+annotationPath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_25/SPADES_25_SPADESInLab_merged.csv"
 
 
 annotationFile <- read.csv(annotationPath, sep = ",", header = FALSE)
