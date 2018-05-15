@@ -51,6 +51,8 @@ for (i in 1:nrow(annotationFile)){
 }
 
 
+annotationFile <- select(annotationFile, -ANNOTATION)
+
 head(annotationFile)
 
 outPathSummary = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_25/LabCountsCombined.csv"
