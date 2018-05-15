@@ -22,14 +22,16 @@ outPathLab = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUN
 count = 0
 
 first = True
-for path in glob.glob(os.path.join(inPathLab,"SPADES_*/LabCountsCombined.csv")):
+for path in glob.glob(os.path.join(inPathLab,"*/LabCountsCombined.csv")):
     #subNow=os.path.basename(path)
     #print(subNow)
     print('Reading ...' + path)
 
     # df = pd.read_csv(path, header=None, sep=',', compression="infer", quotechar='"', parse_dates=[3,4], date_parser=mhealth_timestamp_parser)
     try:
-        df = pd.read_csv(path, header=None, sep=',', compression="infer", quotechar='"')
+        print('before reading')
+        df = pd.read_csv(path, header=0, sep=',', compression="infer", quotechar='"')
+        print('done reading')
         if first:
             first = False
             relevant_df = df
@@ -39,8 +41,8 @@ for path in glob.glob(os.path.join(inPathLab,"SPADES_*/LabCountsCombined.csv")):
     except:
         continue
 
-relevant_df.columns = ['HEADER_START_TIME','HEADER_STOP_TIME','ANNOTATION','CATEGORY','DURATION','ANKLE_COUNTS_ADDED','WRIST_COUNTS_ADDED','TOTAL_ROWS_TEMP_ANKLE','TOTAL_ROWS_TEMP_WRIST']
-relevant_df = relevant_df[['HEADER_START_TIME','HEADER_STOP_TIME','ANNOTATION','CATEGORY','DURATION','ANKLE_COUNTS_ADDED','WRIST_COUNTS_ADDED','TOTAL_ROWS_TEMP_ANKLE','TOTAL_ROWS_TEMP_WRIST']]
-relevant_df.to_csv(os.path.join(outPath,"AllLabCountsCombined.csv"),index=False)
+relevant_df.columns = ['HEADER_START_TIME','HEADER_STOP_TIME','CATEGORY','DURATION','ANKLE_COUNTS_ADDED','WRIST_COUNTS_ADDED','TOTAL_ROWS_TEMP_ANKLE','TOTAL_ROWS_TEMP_WRIST']
+relevant_df = relevant_df[['HEADER_START_TIME','HEADER_STOP_TIME','CATEGORY','DURATION','ANKLE_COUNTS_ADDED','WRIST_COUNTS_ADDED','TOTAL_ROWS_TEMP_ANKLE','TOTAL_ROWS_TEMP_WRIST']]
+relevant_df.to_csv(os.path.join(outPathLab,"AllLabCountsCombined.csv"),index=False)
 
 
