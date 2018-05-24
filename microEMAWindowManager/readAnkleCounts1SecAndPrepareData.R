@@ -7,7 +7,7 @@ library(plyr)
 options(digits.secs=3)
 
 #### read the actigraph counts file (1 sec epoch intervals): Ankle
-uEMAAnkleCounts <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema01_activity/ANKLE/YASEEN_ANKLE (2018-02-02)1secDataTable.csv", 
+uEMAAnkleCounts <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema05_activity/ANKLE/ALICE_ANKLE (2018-02-15)1secDataTable.csv", 
                               sep = ",", header = TRUE)
 
 head(uEMAAnkleCounts)

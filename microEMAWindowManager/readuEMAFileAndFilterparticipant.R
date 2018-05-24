@@ -15,8 +15,8 @@ head(uEMAAllResponses)
 
 #### uEMA participant file data frame format should be "uEMAnResponses" and "uEMAnnAnsweredPrompts"
 
-username = "uema01@micropa_com"
-endTime = as.POSIXct("2018-02-09 23:00:00") #### Always check the sheet for the dates
+username = "uema05@micropa_com"
+endTime = as.POSIXct("2018-02-22 23:00:00") #### Always check the sheet for the
 class(endTime)
 
 #### get a specific participant from 
@@ -43,10 +43,31 @@ uEMAParticipantAnsweredPrompts <- subset(uEMAParticipantAnsweredPrompts, ANSWER_
 head(uEMAParticipantAnsweredPrompts)
 levels(uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE)
 
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "1000"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "1500"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "4000"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "8000"
+### 10s values
+sedValue = 446.16
+lightValue = 505.75
+modValues = 2390
+vigValues = 2602
+
+
+### 30s values
+sedValue = 1338.5
+lightValue = 1617.3
+modValues = 7171
+vigValues = 7805
+
+### 60s values
+sedValue = 1677.0
+lightValue = 3035.0
+modValues = 14341
+vigValues = 15611
+
+##### Start assignment
+
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "1338.5"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "1617.3"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "7171"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "7805"
 
 uEMAParticipantAnsweredPrompts$ANSWER_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
 uEMAParticipantAnsweredPrompts$PROMPT_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
