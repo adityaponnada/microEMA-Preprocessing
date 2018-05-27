@@ -13,7 +13,7 @@ head(combinedWristEMA)
 
 ###### get counts after a certain period from uEMA time stamp - Ankle ######
 
-timeAfter = 30
+timeAfter = 10
 combinedAnkleEMA$COUNTS_SUM_ANKLE_AFTER <- NA
 
 # tempMicroEMA <- head(combinedAnkleEMA, 10)
@@ -83,7 +83,7 @@ head(combinedAnkleEMA)
 
 ##### get counts after a certain period from uEMA time stamp - Wrist ####
 
-timeAfter = 30
+timeAfter = 10
 combinedWristEMA$COUNTS_SUM_WRIST_AFTER <- NA
 
 # tempMicroEMA <- head(combinedAnkleEMA, 10)
