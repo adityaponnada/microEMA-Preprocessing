@@ -15,8 +15,8 @@ head(uEMAAllResponses)
 
 #### uEMA participant file data frame format should be "uEMAnResponses" and "uEMAnnAnsweredPrompts"
 
-username = "uema05@micropa_com"
-endTime = as.POSIXct("2018-02-22 23:00:00") #### Always check the sheet for the
+username = "uema09@micropa_com"
+endTime = as.POSIXct("2018-03-11 23:00:00") #### Always check the sheet for the
 class(endTime)
 
 #### get a specific participant from 
@@ -64,10 +64,10 @@ vigValues = 15611
 
 ##### Start assignment
 
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "1338.5"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "1617.3"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "7171"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "7805"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "446.16"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "505.75"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "2390"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "2602"
 
 uEMAParticipantAnsweredPrompts$ANSWER_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
 uEMAParticipantAnsweredPrompts$PROMPT_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
