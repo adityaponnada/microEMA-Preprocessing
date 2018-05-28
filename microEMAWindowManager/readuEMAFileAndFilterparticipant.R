@@ -64,10 +64,10 @@ vigValues = 15611
 
 ##### Start assignment
 
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "446.16"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "505.75"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "2390"
-uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "2602"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Sedentary"] <- "1677.0"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Light/Standing"] <- "3035.0"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Moderate/Walking"] <- "14341"
+uEMAParticipantAnsweredPrompts$ACTIVITY_CODED[uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE == "Vigorous"] <- "15611"
 
 uEMAParticipantAnsweredPrompts$ANSWER_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$ANSWER_TIME, format = "%m/%d/%Y %H:%M:%OS")
 uEMAParticipantAnsweredPrompts$PROMPT_TIME <- as.POSIXct(uEMAParticipantAnsweredPrompts$PROMPT_TIME, format = "%m/%d/%Y %H:%M:%OS")
