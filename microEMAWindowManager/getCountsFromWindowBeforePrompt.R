@@ -9,7 +9,7 @@ library(plyr)
 options(digits.secs=3)
 
 
-timeBefore = 10
+timeBefore = 60
 
 combinedAnkleEMA <- uEMAParticipantAnsweredPrompts
 combinedAnkleEMA$COUNTS_AVERAGE_ANKLE_BEFORE <- NA
@@ -79,7 +79,7 @@ head(combinedAnkleEMA)
 
 #### get windows for wrist counts
 #### get windowed avergaes from the time before the promt - Ankle
-timeBefore = 10
+timeBefore = 60
 
 combinedWristEMA <- uEMAParticipantAnsweredPrompts
 combinedWristEMA$COUNTS_AVERAGE_WRIST_BEFORE <- NA
