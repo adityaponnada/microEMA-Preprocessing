@@ -8,7 +8,7 @@ options(digits.secs=3)
 
 #### read the actigraph counts file (1 sec epoch intervaLS) :  Wrist
 
-uEMAWristCounts <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema09_activity/WRIST/VARUN_WRIST (2018-03-04)1secDataTable.csv", 
+uEMAWristCounts <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema19_activity/WRIST/MARGEE_WRIST (2018-04-17)1secDataTable.csv", 
                               sep = ",", header = TRUE)
 
 head(uEMAWristCounts)
@@ -29,5 +29,5 @@ head(uEMAWristCounts)
 colnames(uEMAWristCounts)[2] <- "COUNTS_MAGNITUDE_WRIST"
 head(uEMAWristCounts)
 
-uEMAWristCounts<-uEMAWristCounts[-which(is.na(uEMAWristCounts$DATE_TIME_ANKLE)),]
-nrow(uEMAWristCounts)
+# uEMAWristCounts<-uEMAWristCounts[-which(is.na(uEMAWristCounts$DATE_TIME_ANKLE)),]
+# nrow(uEMAWristCounts)

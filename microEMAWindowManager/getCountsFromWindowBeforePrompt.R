@@ -87,60 +87,60 @@ combinedWristEMA$COUNTS_AVERAGE_WRIST_BEFORE <- NA
 
 
 ###################### Raw code ###################
-
+# 
 k=0
 
 for (i in 1:nrow(uEMAParticipantAnsweredPrompts)){
   print(paste0("Starting with the uEMA index: ", i))
   uEMAPickedRow <- uEMAParticipantAnsweredPrompts[i,]
-  
+
   k = k+1
-  
+
   if (k > nrow(uEMAWristCounts)){
     print("Maxed out in the second file ... exiting")
     break
-    
+
   }
   print("creating a temporary data frame")
   tempDataFrame = data.frame()
-  
+
   for (j in k:nrow(uEMAWristCounts)){
     print(paste0("Starting with the second file index: ", j, " and k is: ", k))
-    
+
     countsPickedRow <- uEMAWristCounts[j,]
-    
+
     timeDifference = difftime(uEMAPickedRow$PROMPT_TIME, countsPickedRow$DATE_TIME_ANKLE,   units = "secs")
     print(paste0("The time difference is: ", timeDifference))
-    
+
     if (timeDifference <= timeBefore & timeDifference >= 0){
-      
+
       print(paste0("Time difference is within the range at ", "j = ", j, " k = ", k, " for i = ", i))
-      
+
       ## Add all these rows in a temporary data frame
       tempDataFrame <- rbind(tempDataFrame, countsPickedRow)
       print("Get average counts")
-      
+
       countsSum = sum(tempDataFrame$COUNTS_MAGNITUDE_WRIST)
       print("Assign average as a new column")
-      
+
       print(paste0("CountsAverage is: ", countsSum))
-      
+
       combinedWristEMA$COUNTS_AVERAGE_WRIST_BEFORE[i] <- countsSum
       #tempAverages[i,] <- i
       k = j
-      
-      
+
+
     } else if (timeDifference < 0) {
       print("Time difference negative ... exiting")
-      
+
       break
     }
-    
-    
+
+
   }
-  
+
   print(paste0("i is: ", i))
-  
+
 }
 
 #tempMicroEMA$COUNTS_AVERAGE_ANKLE_BEFORE <- tempAverages
