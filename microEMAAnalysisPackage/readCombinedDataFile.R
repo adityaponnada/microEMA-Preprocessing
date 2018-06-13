@@ -20,3 +20,6 @@ tail(combinedFile)
 combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
 combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
 
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
