@@ -8,7 +8,7 @@ library(ggplot2)
 
 ## read file
 
-filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/thirtySecMappedData.csv"
 
 combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
 
