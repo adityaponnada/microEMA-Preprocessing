@@ -1,0 +1,163 @@
+---
+title: "confusionMatrices"
+author: "Aditya Ponnada"
+date: "June 13, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+#### Import library
+
+```{r}
+library(psych)
+library(MASS)
+library(caret)
+```
+
+
+#### Select the columns of interest ...
+
+```{r}
+## read file
+
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+## for ten seconds #####
+
+#### Sedentary: [0.00, 330.1)
+#### Light/Standing: [330.1, 1096.66)
+#### Moderate/Walking: [1096.66, 2180.37)
+#### Vigorous: [2180.37, 5400.00)
+
+
+
+```{r}
+combinedFile$COUNTS_ACTIVITY[combinedFile$COUNTS_SUM_ANKLE_BEFORE >= 0.00 & combinedFile$COUNTS_SUM_ANKLE_BEFORE < 330.01] <- "Sedentary"
+combinedFile$COUNTS_ACTIVITY[combinedFile$COUNTS_SUM_ANKLE_BEFORE >= 330.01 & combinedFile$COUNTS_SUM_ANKLE_BEFORE < 1096.66] <- "Light/Standing"
+combinedFile$COUNTS_ACTIVITY[combinedFile$COUNTS_SUM_ANKLE_BEFORE >= 1096.66 & combinedFile$COUNTS_SUM_ANKLE_BEFORE < 2180.37] <- "Moderate/Walking"
+combinedFile$COUNTS_ACTIVITY[combinedFile$COUNTS_SUM_ANKLE_BEFORE >= 2180.37 & combinedFile$COUNTS_SUM_ANKLE_BEFORE < 5400.00] <- "Vigorous"
+
+
+combinedFile$COUNTS_ACTIVITY <- as.factor(combinedFile$COUNTS_ACTIVITY)
+```
+
+
+```{r}
+keep <- c("COUNTS_ACTIVITY", "ACTIVITY_TYPE")
+
+sampleData <- combinedFile[keep]
+```
+
+#### Generate confusion matrix and plot the results ... 
+
+```{r}
+conf_mat_tab <- table(lapply(sampleData, factor))
+
+matrixConf <- confusionMatrix(conf_mat_tab)
+
+plot(matrixConf$table)
+```
+
+#### Display the results ...
+
+```{r}
+matrixConf
+```
+
+#### Get levels and their order
+```{r}
+levels(sampleData$COUNTS_ACTIVITY)
+levels(sampleData$ACTIVITY_TYPE)
+```
+
+#### Convert levels to numerals i order
+```{r}
+# sampleData$COUNTS_CODED[sampleData$COUNTS_ACTIVITY == "Sedentary"] <- 1
+# sampleData$COUNTS_CODED[sampleData$COUNTS_ACTIVITY == "Light/Standing"] <- 2
+# sampleData$COUNTS_CODED[sampleData$COUNTS_ACTIVITY == "Moderate/Walking"] <- 3
+# sampleData$COUNTS_CODED[sampleData$COUNTS_ACTIVITY == "Vigorous"] <- 4
+# 
+# sampleData$CODED_TYPE[sampleData$ACTIVITY_TYPE == "Sedentary"] <- 1
+# sampleData$CODED_TYPE[sampleData$ACTIVITY_TYPE == "Light/Standing"] <- 2
+# sampleData$CODED_TYPE[sampleData$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
+# sampleData$CODED_TYPE[sampleData$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+
+```
+
+
+#### Get agreement (without within subject differences)
+
+```{r}
+library(irr)
+kappa2(sampleData, "unweighted")
+```
+
+#### Sitting vs non sitting
+```{r}
+sample2 <- sampleData
+
+levels(sample2$ACTIVITY_TYPE)[5] <- "Moving"
+levels(sample2$COUNTS_ACTIVITY)[5] <- "Moving"
+
+sample2$ACTIVITY_TYPE[!sample2$ACTIVITY_TYPE == "Sedentary"] <- "Moving"
+sample2$COUNTS_ACTIVITY[!sample2$COUNTS_ACTIVITY == "Sedentary"] <- "Moving"
+
+```
+
+```{r}
+kappa2(sample2, "unweighted")
+```
+
+```{r}
+sample2Conf <- table(lapply(sample2, factor))
+
+matrixConfSample2 <- confusionMatrix(sample2Conf)
+
+plot(matrixConfSample2$table)
+
+matrixConfSample2
+```
+
+#### Clubbing sedentary and standing together for ankle data
+```{r}
+sample3 <- sampleData
+
+levels(sample3$ACTIVITY_TYPE)[5] <- "Moving"
+levels(sample3$COUNTS_ACTIVITY)[5] <- "Moving"
+
+sample3$ACTIVITY_TYPE[!(sample3$ACTIVITY_TYPE == "Sedentary" | sample3$ACTIVITY_TYPE == "Light/Standing")] <- "Moving"
+sample3$ACTIVITY_TYPE[(sample3$ACTIVITY_TYPE == "Sedentary" | sample3$ACTIVITY_TYPE == "Light/Standing")] <- "Sedentary"
+sample3$COUNTS_ACTIVITY[!(sample3$COUNTS_ACTIVITY == "Sedentary" | sample3$COUNTS_ACTIVITY == "Light/Standing")] <- "Moving"
+
+sample3$COUNTS_ACTIVITY[(sample3$COUNTS_ACTIVITY == "Sedentary" | sample3$COUNTS_ACTIVITY == "Light/Standing")] <- "Sedentary"
+```
+
+```{r}
+kappa2(sample3, "unweighted")
+```
+```{r}
+sample3Conf <- table(lapply(sample3, factor))
+
+matrixConfSample3 <- confusionMatrix(sample3Conf)
+
+plot(matrixConfSample3$table)
+
+matrixConfSample3
+```
