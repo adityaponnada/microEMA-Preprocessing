@@ -31,30 +31,32 @@ for (i in 1:nrow(annotationFile)){
   
 }
 
-countsInWindows = 0
+### Commenting it out for now
 
-for (i in 1:nrow(annotationFile)){
-  print(paste0("At the annotation number: ", i))
-  
-  tempSpadesFrame <- spadesWrist[spadesWrist$DATE_TIME_ANKLE >= annotationFile$HEADER_START_TIME[i] & 
-                                   spadesWrist$DATE_TIME_ANKLE <= annotationFile$HEADER_STOP_TIME[i],]
-  
-  countsInWindows = sum(tempSpadesFrame$Vector.Magnitude)
-  
-  print(paste0("Total counts found: ", countsInWindows))
-  
-  annotationFile$WRIST_COUNTS_ADDED[i] <- countsInWindows
-  annotationFile$TOTAL_ROWS_TEMP_WRIST[i] <- nrow(tempSpadesFrame)
-  
-  print("Counts have been added")
-  
-}
+# countsInWindows = 0
+# 
+# for (i in 1:nrow(annotationFile)){
+#   print(paste0("At the annotation number: ", i))
+#   
+#   tempSpadesFrame <- spadesWrist[spadesWrist$DATE_TIME_ANKLE >= annotationFile$HEADER_START_TIME[i] & 
+#                                    spadesWrist$DATE_TIME_ANKLE <= annotationFile$HEADER_STOP_TIME[i],]
+#   
+#   countsInWindows = sum(tempSpadesFrame$Vector.Magnitude)
+#   
+#   print(paste0("Total counts found: ", countsInWindows))
+#   
+#   annotationFile$WRIST_COUNTS_ADDED[i] <- countsInWindows
+#   annotationFile$TOTAL_ROWS_TEMP_WRIST[i] <- nrow(tempSpadesFrame)
+#   
+#   print("Counts have been added")
+#   
+# }
 
 
 annotationFile <- select(annotationFile, -ANNOTATION)
 
 head(annotationFile)
 
-outPathSummary = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_25/LabCountsCombined.csv"
+outPathSummary = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/SPADES_ACTIVITY_COUNT/SPADES_1/LabCountsCombined.csv"
 
 write.csv(file = outPathSummary, x = annotationFile, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
