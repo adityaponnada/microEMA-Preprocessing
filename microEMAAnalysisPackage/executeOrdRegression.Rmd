@@ -1,0 +1,86 @@
+---
+title: "Ordinal Logistic Regression"
+author: "Aditya Ponnada"
+date: "June 16, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+#### Import libraries
+
+```{r}
+library(psych)
+library(MASS)
+library(reshape2)
+library(plotly)
+library(ggplot2)
+library(ordinal)
+```
+
+
+#### Read combined uEMA counts file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/sixtySecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+```
+
+#### Convert date time columns to date time objects
+
+```{r}
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+```
+
+#### Remove accelerometer non wear days from the file
+
+```{r}
+uEMAComboFile <- uEMAComboFile[!(uEMAComboFile$USER_ID == "uema02@micropa_com" & ((uEMAComboFile$PROMPT_TIME > as.POSIXct("2018-02-10 07:00:00") & uEMAComboFile$PROMPT_TIME < as.POSIXct("2018-02-10 23:00:00")) | (uEMAComboFile$PROMPT_TIME > as.POSIXct("2018-02-12 07:00:00") & uEMAComboFile$PROMPT_TIME < as.POSIXct("2018-02-12 23:00:00")) | (uEMAComboFile$PROMPT_TIME > as.POSIXct("2018-02-22 07:00:00") & uEMAComboFile$PROMPT_TIME < as.POSIXct("2018-02-22 23:00:00")))),]
+
+
+uEMAComboFile <- uEMAComboFile[!(uEMAComboFile$USER_ID == "uema06@micropa_com" & ((uEMAComboFile$PROMPT_TIME > as.POSIXct("2018-02-24 00:00:00") & uEMAComboFile$PROMPT_TIME < as.POSIXct("2018-02-24 10:00:00")))),]
+
+#### remove participant 17
+
+##uEMAComboFile <- uEMAComboFile[!(uEMAComboFile$USER_ID == "uema17@micropa_com"),]
+```
+
+#### Convert uEMA responses to ordinal responses
+
+```{r}
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+
+
+#### Run mixed effects ordinal regression with participant as random effect
+
+```{r}
+model1 <- clmm(ACTIVITY_ORDINAL~COUNTS_SUM_ANKLE_BEFORE + (1|USER_ID), data = uEMAComboFile, Hess = T, nAGQ = 1)
+
+model1
+
+summary(model1)
+```
