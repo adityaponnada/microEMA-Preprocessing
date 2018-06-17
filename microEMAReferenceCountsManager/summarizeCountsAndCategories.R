@@ -14,17 +14,17 @@ countsAnkle30sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~ANKLE_30, type = "box"
 countsAnkle60sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~ANKLE_60, type = "box",name = "ANKLE_COUNTS_60s", 
                             legendgroup = "ANKLE")
 
-countsWrist10sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~WRIST_10, type = "box", name = "WRIST_COUNTS_10s", 
-                            legendgroup = "WRIST")
-countsWrist30sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~WRIST_30, type = "box", name = "WRIST_COUNTS_30s", 
-                            legendgroup = "WRIST")
-countsWrist60sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~WRIST_60, type = "box", name = "WRIST_COUNTS_60s", 
-                            legendgroup = "WRIST")
+# countsWrist10sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~WRIST_10, type = "box", name = "WRIST_COUNTS_10s", 
+#                             legendgroup = "WRIST")
+# countsWrist30sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~WRIST_30, type = "box", name = "WRIST_COUNTS_30s", 
+#                             legendgroup = "WRIST")
+# countsWrist60sec <- plot_ly(AllLabCounts, x=~CATEGORY, y=~WRIST_60, type = "box", name = "WRIST_COUNTS_60s", 
+#                             legendgroup = "WRIST")
 
-subplot(style(countsAnkle10sec, showlegend = TRUE), style(countsAnkle30sec, showlegend = TRUE),
-        style(countsAnkle60sec, showlegend = TRUE),
-        style(countsWrist10sec, showlegend = TRUE),style(countsWrist30sec, showlegend = TRUE),
-        style(countsWrist60sec, showlegend = TRUE), nrows = 2, margin = 0.05, shareX = TRUE)
+# subplot(style(countsAnkle10sec, showlegend = TRUE), style(countsAnkle30sec, showlegend = TRUE),
+#         style(countsAnkle60sec, showlegend = TRUE),
+#         style(countsWrist10sec, showlegend = TRUE),style(countsWrist30sec, showlegend = TRUE),
+#         style(countsWrist60sec, showlegend = TRUE), nrows = 2, margin = 0.05, shareX = TRUE)
 
 
 
@@ -51,29 +51,45 @@ summary(aovAnkle30)
 postHocAnkle60 <- TukeyHSD(x=aovAnkle60, 'CATEGORY', conf.level = 0.95)
 postHocAnkle60
 
+#### Ankle set 150
+aovAnkle150 <- aov(ANKLE_150~CATEGORY, data = AllLabCounts)
+summary(aovAnkle150)
+
+postHocAnkle150 <- TukeyHSD(x=aovAnkle150, 'CATEGORY', conf.level = 0.95)
+postHocAnkle150
+
+#### Ankle set 300
+aovAnkle300 <- aov(ANKLE_300~CATEGORY, data = AllLabCounts)
+summary(aovAnkle300)
+
+postHocAnkle300 <- TukeyHSD(x=aovAnkle300, 'CATEGORY', conf.level = 0.95)
+postHocAnkle300
+
+
+
 #### Note: All cases are in order
 
 
-#### Wrist set 10
-aovWrist10 <- aov(WRIST_10~CATEGORY, data = AllLabCounts)
-summary(aovWrist10)
-
-postHocWrist10 <- TukeyHSD(x=aovWrist10, 'CATEGORY', conf.level = 0.95)
-postHocWrist10
-
-#### Wrist set 30
-aovWrist30 <- aov(WRIST_30~CATEGORY, data = AllLabCounts)
-summary(aovWrist30)
-
-postHocWrist30 <- TukeyHSD(x=aovWrist30, 'CATEGORY', conf.level = 0.95)
-postHocWrist30
-
-#### Wrist set 60
-aovWrist60 <- aov(WRIST_60~CATEGORY, data = AllLabCounts)
-summary(aovWrist60)
-
-postHocWrist60 <- TukeyHSD(x=aovWrist60, 'CATEGORY', conf.level = 0.95)
-postHocWrist60
+# #### Wrist set 10
+# aovWrist10 <- aov(WRIST_10~CATEGORY, data = AllLabCounts)
+# summary(aovWrist10)
+# 
+# postHocWrist10 <- TukeyHSD(x=aovWrist10, 'CATEGORY', conf.level = 0.95)
+# postHocWrist10
+# 
+# #### Wrist set 30
+# aovWrist30 <- aov(WRIST_30~CATEGORY, data = AllLabCounts)
+# summary(aovWrist30)
+# 
+# postHocWrist30 <- TukeyHSD(x=aovWrist30, 'CATEGORY', conf.level = 0.95)
+# postHocWrist30
+# 
+# #### Wrist set 60
+# aovWrist60 <- aov(WRIST_60~CATEGORY, data = AllLabCounts)
+# summary(aovWrist60)
+# 
+# postHocWrist60 <- TukeyHSD(x=aovWrist60, 'CATEGORY', conf.level = 0.95)
+# postHocWrist60
 
 #### Note: All cases are in order
 
