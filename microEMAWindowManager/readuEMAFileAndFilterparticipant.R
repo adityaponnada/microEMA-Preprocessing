@@ -15,8 +15,8 @@ head(uEMAAllResponses)
 
 #### uEMA participant file data frame format should be "uEMAnResponses" and "uEMAnnAnsweredPrompts"
 
-username = "uema16@micropa_com"
-endTime = as.POSIXct("2018-04-17 23:00:00") #### Always check the sheet for the
+username = "uema19@micropa_com"
+endTime = as.POSIXct("2018-04-24 23:00:00") #### Always check the sheet for the
 class(endTime)
 
 #### get a specific participant from 
@@ -57,10 +57,10 @@ levels(uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE)
 # vigValues = "7805"
 
 ### 60s values
-sedValue = "1677.0"
-lightValue = "3035.0"
-modValues = "14341"
-vigValues = "15611"
+# sedValue = "1677.0"
+# lightValue = "3035.0"
+# modValues = "14341"
+# vigValues = "15611"
 
 ### 150s values
 # sedValue = "6692.4"
@@ -73,6 +73,12 @@ vigValues = "15611"
 # lightValue = "15173"
 # modValues = "71705"
 # vigValues = "78053"
+
+### 600s values
+sedValue = "26770"
+lightValue = "30345"
+modValues = "143411"
+vigValues = "156105"
 
 ##### Start assignment
 

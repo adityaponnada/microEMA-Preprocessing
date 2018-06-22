@@ -8,7 +8,3 @@ combinedFile <- combinedFile[!(combinedFile$USER_ID == "uema02@micropa_com" & ((
 combinedFile <- combinedFile[!(combinedFile$USER_ID == "uema06@micropa_com" & ((combinedFile$PROMPT_TIME > as.POSIXct("2018-02-24 00:00:00") & combinedFile$PROMPT_TIME < as.POSIXct("2018-02-24 10:00:00")))),]
 
 
-
-#### remove participant 17
-
-combinedFile <- combinedFile[!(combinedFile$USER_ID == "uema17@micropa_com"),]

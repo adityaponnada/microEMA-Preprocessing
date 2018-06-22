@@ -22,7 +22,7 @@ library(ordinal)
 #### Read combined uEMA counts file
 
 ```{r}
-path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/SixHundSecMappedData.csv"
 
 uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
 
