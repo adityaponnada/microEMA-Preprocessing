@@ -8,7 +8,7 @@ options(digits.secs=3)
 
 #### read the actigraph counts file (1 sec epoch intervaLS) :  Wrist
 
-uEMAWristCounts <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema16_activity/WRIST/ALICIA_WRIST (2018-04-10)1secDataTable.csv", 
+uEMAWristCounts <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema11_activity/WRIST/STEFAN_WRIST (2018-03-20)1secDataTable.csv", 
                               sep = ",", header = TRUE)
 
 head(uEMAWristCounts)

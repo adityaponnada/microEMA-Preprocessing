@@ -65,6 +65,13 @@ summary(aovAnkle300)
 postHocAnkle300 <- TukeyHSD(x=aovAnkle300, 'CATEGORY', conf.level = 0.95)
 postHocAnkle300
 
+#### Ankle set 600
+aovAnkle600 <- aov(ANKLE_600~CATEGORY, data = AllLabCounts)
+summary(aovAnkle600)
+
+postHocAnkle600 <- TukeyHSD(x=aovAnkle600, 'CATEGORY', conf.level = 0.95)
+postHocAnkle600
+
 
 
 #### Note: All cases are in order

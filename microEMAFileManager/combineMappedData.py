@@ -22,7 +22,7 @@ outPathLab = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/"
 count = 0
 
 first = True
-for path in glob.glob(os.path.join(inPathLab,"uema*/combinedData_60sec.csv")):
+for path in glob.glob(os.path.join(inPathLab,"uema*/combinedData_600sec.csv")):
     #subNow=os.path.basename(path)
     #print(subNow)
     print('Reading ...' + path)
@@ -43,6 +43,6 @@ for path in glob.glob(os.path.join(inPathLab,"uema*/combinedData_60sec.csv")):
 
 relevant_df.columns = ['USER_ID','PROMPT_TIME','ANSWER_TIME','RESPONSE_TIME','ACTIVITY_TYPE','ACTIVITY_CODED','ACTIVITY_NUMERIC','COUNTS_SUM_ANKLE_BEFORE','COUNTS_SUM_ANKLE_AFTER','COUNTS_SUM_WRIST_BEFORE','COUNTS_SUM_WRIST_AFTER','TOTAL_ANKLE_COUNTS','TOTAL_WRIST_COUNTS']
 relevant_df = relevant_df[['USER_ID','PROMPT_TIME','ANSWER_TIME','RESPONSE_TIME','ACTIVITY_TYPE','ACTIVITY_CODED','ACTIVITY_NUMERIC','COUNTS_SUM_ANKLE_BEFORE','COUNTS_SUM_ANKLE_AFTER','COUNTS_SUM_WRIST_BEFORE','COUNTS_SUM_WRIST_AFTER','TOTAL_ANKLE_COUNTS','TOTAL_WRIST_COUNTS']]
-relevant_df.to_csv(os.path.join(outPathLab,"sixtySecMappedData.csv"),index=False)
+relevant_df.to_csv(os.path.join(outPathLab,"SixHundSecMappedData.csv"),index=False)
 
 

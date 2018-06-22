@@ -35,6 +35,7 @@ head(AllLabCounts)
 
 
 ### Get per second counts for 10, 30, and 60 seconds
+AllLabCounts$ANKLE_600 <- AllLabCounts$ANKLE_COUNTS_PER_SECOND*600
 AllLabCounts$ANKLE_300 <- AllLabCounts$ANKLE_COUNTS_PER_SECOND*300
 AllLabCounts$ANKLE_150 <- AllLabCounts$ANKLE_COUNTS_PER_SECOND*150
 AllLabCounts$ANKLE_60 <- AllLabCounts$ANKLE_COUNTS_PER_SECOND*60
