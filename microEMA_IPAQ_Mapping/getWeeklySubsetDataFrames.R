@@ -42,4 +42,4 @@ uEMAResponseCounts4$USER_ID <- username
 
 weeklyParticipantActivity <- rbind(uEMAResponseCounts1, uEMAResponseCounts2, uEMAResponseCounts3, uEMAResponseCounts4)
 
-write.csv(file = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema01/weeklyData.csv", x = weeklyParticipantActivity, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
+write.csv(file = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema16/weeklyData.csv", x = weeklyParticipantActivity, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")

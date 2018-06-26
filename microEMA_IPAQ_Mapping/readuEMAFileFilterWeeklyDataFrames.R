@@ -13,11 +13,11 @@ head(uEMAAll)
 
 ### Please verify using participant logs
 
-username = "uema01@micropa_com"
-week1Ends = as.POSIXct("2018-02-09 23:00:00")
-week2Ends = as.POSIXct("2018-02-16 23:00:00")
-week3Ends = as.POSIXct("2018-02-23 23:00:00")
-week4Ends = as.POSIXct("2018-03-02 23:00:00")
+username = "uema16@micropa_com"
+week1Ends = as.POSIXct("2018-04-17 23:00:00")
+week2Ends = as.POSIXct("2018-05-24 23:00:00")
+week3Ends = as.POSIXct("2018-05-01 23:00:00")
+week4Ends = as.POSIXct("2018-05-08 23:00:00")
 
 uEMAParticipant <- uEMAAll[uEMAAll$USER_ID == username,]
 head(uEMAParticipant)
