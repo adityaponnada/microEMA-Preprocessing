@@ -74,6 +74,39 @@ levels(uEMAComboFile$ACTIVITY_ORDINAL)
 
 ```
 
+#### Rescale (log transformation) of counts variable
+```{r}
+ggplot(data=uEMAComboFile, aes(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE)) + geom_histogram()
+
+uEMAComboFile$COUNTS_LOG <- log(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE + 1)
+
+ggplot(data=uEMAComboFile, aes(uEMAComboFile$COUNTS_LOG)) + geom_histogram()
+
+uEMAComboFile$COUNTS_SQRT <- sqrt(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE)
+
+ggplot(data=uEMAComboFile, aes(uEMAComboFile$COUNTS_SQRT)) + geom_histogram()
+
+```
+
+#### Convert UserID to numeric
+
+```{r}
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema01@micropa_com"] <- "1"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema02@micropa_com"] <- "2"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema03@micropa_com"] <- "3"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema04@micropa_com"] <- "4"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema05@micropa_com"] <- "5"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema06@micropa_com"] <- "6"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema07@micropa_com"] <- "7"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema09@micropa_com"] <- "9"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema11@micropa_com"] <- "11"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema14@micropa_com"] <- "14"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema15@micropa_com"] <- "15"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema16@micropa_com"] <- "16"
+uEMAComboFile$P_ID[uEMAComboFile$USER_ID == "uema19@micropa_com"] <- "19"
+
+```
+
 
 #### Run mixed effects ordinal regression with participant as random effect
 
@@ -84,3 +117,20 @@ model1
 
 summary(model1)
 ```
+
+
+#### Ordinal regression with participant numneric ID
+```{r}
+model2 <- clmm(ACTIVITY_ORDINAL~COUNTS_LOG + (1|P_ID), data = uEMAComboFile, Hess = T, nAGQ = 10, control = clmm.control(maxIter = 50))
+
+model2
+
+summary(model2)
+```
+
+#### Trial with max iterations
+
+```{r}
+
+```
+
