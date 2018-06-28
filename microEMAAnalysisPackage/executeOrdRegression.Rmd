@@ -16,13 +16,14 @@ library(reshape2)
 library(plotly)
 library(ggplot2)
 library(ordinal)
+library(lme4)
 ```
 
 
 #### Read combined uEMA counts file
 
 ```{r}
-path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/SixHundSecMappedData.csv"
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
 
 uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
 
@@ -128,9 +129,99 @@ model2
 summary(model2)
 ```
 
-#### Trial with max iterations
+```{r}
+library(car)
+library(RVAideMemoire)
+Anova(model2, type = "II")
+```
+
+#### Compare with fixed effects only model
+```{r}
+model.fixed <- clm(ACTIVITY_ORDINAL~COUNTS_LOG, data = uEMAComboFile)
+
+anova(model2, null = model.fixed)
+```
+
+#### Nominal and scale tests
+```{r}
+nominal_test(model.fixed)
+
+scale_test(model.fixed)
+```
+
+#### One way repeated - generalized linear model
 
 ```{r}
 
+model_counts <- lmer(COUNTS_LOG~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+```
+```{r}
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+
+```
+
+#### Remove instances of "Vigorous activities"
+```{r}
+uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
+
+levels(uEMANoVigorous$ACTIVITY_TYPE)
+```
+
+```{r}
+model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMANoVigorous, REML = FALSE)
+summary(model_counts_1)
+
+coefs <- data.frame(coef(summary(model_counts_1)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+```
+
+#### Pairwise comparisons
+
+```{r}
+library(emmeans)
+library(multcomp)
+emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+
+#### Pairwise comparisons
+
+```{r}
+model_counts <- lmer(COUNTS_LOG~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMANoVigorous, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+```
+
+```{r}
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+
+
+#### Check the change in counts for vigorous activities:
+
+```{r}
+uEMAVigoroudOnly <- uEMAComboFile[uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
+uEMAVigoroudOnly
 ```
 
