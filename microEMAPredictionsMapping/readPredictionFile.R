@@ -6,3 +6,8 @@ options(digits.secs=3)
 
 predictionFile <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema01_activity/Predictions/ankle_uEMA_prediction_samples_on_SPADES_model.csv", 
                            sep = ",", header = TRUE)
+
+
+colnames(predictionFile)[1] <- "PARTICIPANT_ID"
+
+predictionFile$PARTICIPANT_ID <- paste0("SPADES_", predictionFile$PARTICIPANT_ID)
