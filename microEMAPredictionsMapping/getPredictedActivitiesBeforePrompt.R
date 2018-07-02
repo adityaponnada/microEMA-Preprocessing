@@ -9,7 +9,7 @@ uEMAParticipantAnsweredPrompts$FINAL_PREDICTED_ACTIVITY <- NA
 # headPredictions <- head(predictedActivities, 10000)
 # headuEMA <- head(uEMAParticipantAnsweredPrompts, 10)
 
-timeBefore = 10
+timeBefore = 12.8
 
 k = 0
 
