@@ -12,4 +12,6 @@ uEMAParticipantAnsweredPrompts$PREDICTED_ACTIVITY_TYPE[uEMAParticipantAnsweredPr
 
 testFrame <- uEMAParticipantAnsweredPrompts
 
-testFrame <- na.omit(testFrame)
+testFrame <- testFrame[!is.na(testFrame$PREDICTED_ACTIVITY_TYPE),]
+
+testFrame$PREDICTED_ACTIVITY_TYPE <- as.factor(testFrame$PREDICTED_ACTIVITY_TYPE)
