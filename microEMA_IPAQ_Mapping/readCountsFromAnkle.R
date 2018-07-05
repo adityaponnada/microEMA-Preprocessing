@@ -21,9 +21,9 @@ modMax = 515/5
 vigMin = 515/5
 #vigMax = 515/5
 
-username = "uema19@micropa_com"
+username = "uema01@micropa_com"
 
-ankleData <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema19_activity/ANKLE/MARGEE_ANKLE (2018-04-17)1secDataTable.csv", 
+ankleData <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema01_activity/ANKLE/YASEEN_ANKLE (2018-02-02)1secDataTable.csv", 
                                          sep = ",", header = TRUE)
 
 head(ankleData)

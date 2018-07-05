@@ -1,8 +1,8 @@
 library(psych)
 
-ankleData$CLASSIFIED_ACTIVITY <- as.factor(ankleData$CLASSIFIED_ACTIVITY)
+wakingHoursData$CLASSIFIED_ACTIVITY <- as.factor(wakingHoursData$CLASSIFIED_ACTIVITY)
 
-categoryCounts <- summary(ankleData$CLASSIFIED_ACTIVITY)
+categoryCounts <- summary(wakingHoursData$CLASSIFIED_ACTIVITY)
 
 categoryCounts <- t(categoryCounts)
 
