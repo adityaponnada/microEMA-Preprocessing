@@ -4,8 +4,8 @@ library(plotly)
 
 wakingHoursData <- data.frame()
 
-startTime = as.POSIXct("2018-04-17 08:00:00")
-endTime = as.POSIXct("2018-04-17 20:00:00")
+startTime = as.POSIXct("2018-04-17 07:00:00")
+endTime = as.POSIXct("2018-04-17 23:00:00")
 
 startTime = strftime(startTime, format = "%H:%M:%OS")
 endTime = strftime(endTime, format = "%H:%M:%OS")
