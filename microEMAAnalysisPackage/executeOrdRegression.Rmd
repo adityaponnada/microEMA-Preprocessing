@@ -153,7 +153,7 @@ scale_test(model.fixed)
 
 ```{r}
 
-model_counts <- lmer(COUNTS_LOG~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMAComboFile, REML = FALSE)
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMAComboFile, REML = FALSE)
 summary(model_counts)
 
 coefs <- data.frame(coef(summary(model_counts)))
@@ -169,6 +169,30 @@ emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
 summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 
 ```
+
+#### With response time as a covariate
+
+```{r}
+uEMAComboFile$RESPONSE_TIME <- as.numeric(uEMAComboFile$RESPONSE_TIME)
+
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + RESPONSE_TIME + (1 | P_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+```
+
+```{r}
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+
+```
+
 
 #### Remove instances of "Vigorous activities"
 ```{r}
