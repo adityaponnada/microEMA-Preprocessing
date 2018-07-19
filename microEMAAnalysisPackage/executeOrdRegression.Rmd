@@ -23,7 +23,7 @@ library(lme4)
 #### Read combined uEMA counts file
 
 ```{r}
-path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/SixHundSecMappedData.csv"
 
 uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
 
@@ -157,6 +157,8 @@ nominal_test(model.fixed)
 scale_test(model.fixed)
 ```
 
+### LMER - ordinal
+
 #### One way repeated - generalized linear model
 
 ```{r}
@@ -232,7 +234,7 @@ summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = a
 #### Pairwise comparisons
 
 ```{r}
-model_counts <- lmer(COUNTS_LOG~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMANoVigorous, REML = FALSE)
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | P_ID), data = uEMANoVigorous, REML = FALSE)
 summary(model_counts)
 
 coefs <- data.frame(coef(summary(model_counts)))
