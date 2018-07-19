@@ -22,7 +22,7 @@ outPath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/Responses_uEMA"
 count = 0
 
 first = True
-for path in glob.glob(os.path.join(inPath,"uema*@micropa_com/logs-watch/*/*/Watch-UndoActionLogs.log.csv")):
+for path in glob.glob(os.path.join(inPath,"uema*@micropa_com/logs-watch/*/*/Watch-PromptActivity.log.csv")):
     #subNow=os.path.basename(path)
     #print(subNow)
     print('Reading ...' + path)
@@ -41,6 +41,6 @@ for path in glob.glob(os.path.join(inPath,"uema*@micropa_com/logs-watch/*/*/Watc
 
 relevant_df.columns = ['LOG_TIME','TYPE','USER_ID','PROMPT_TIME','ANSWER_TIME','RESPONSE_TIME','ACTIVITY_TYPE','PROMPT']
 relevant_df = relevant_df[['LOG_TIME','TYPE','USER_ID','PROMPT_TIME','ANSWER_TIME','RESPONSE_TIME','ACTIVITY_TYPE','PROMPT']]
-relevant_df.to_csv(os.path.join(outPath,"uEMAUndoResponses.csv"),index=False)
+relevant_df.to_csv(os.path.join(outPath,"uEMAPromptResponses.csv"),index=False)
 
 

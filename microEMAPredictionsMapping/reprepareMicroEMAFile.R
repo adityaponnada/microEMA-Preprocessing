@@ -15,3 +15,6 @@ testFrame <- uEMAParticipantAnsweredPrompts
 testFrame <- testFrame[!is.na(testFrame$PREDICTED_ACTIVITY_TYPE),]
 
 testFrame$PREDICTED_ACTIVITY_TYPE <- as.factor(testFrame$PREDICTED_ACTIVITY_TYPE)
+
+
+write.csv(file = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema02/mappedPredictions_600.csv", x = testFrame, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
