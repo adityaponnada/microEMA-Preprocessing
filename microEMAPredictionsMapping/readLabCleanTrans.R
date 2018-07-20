@@ -4,7 +4,7 @@ library(dplyr)
 library(plyr)
 options(digits.secs=3)
 
-labCleanTrans <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema02_activity/Predictions/lab_clean_trans.csv", 
+labCleanTrans <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/VizDataCheck/uema06_activity/ANKLE/Predictions/lab_clean_trans.csv", 
                      sep = ",", header = TRUE)
 
 keepColumns <- c("PARTICIPANT_ID", "HEADER_START_TIME", "HEADER_STOP_TIME")

@@ -1,0 +1,6 @@
+source('C:/Users/Dharam/Downloads/microEMA/HelperScripts/microEMAPredictionsMapping/readMicroEMAFile.R', echo=TRUE)
+source('C:/Users/Dharam/Downloads/microEMA/HelperScripts/microEMAPredictionsMapping/readLabCleanTrans.R', echo=TRUE)
+source('C:/Users/Dharam/Downloads/microEMA/HelperScripts/microEMAPredictionsMapping/readPredictionFile.R', echo=TRUE)
+source('C:/Users/Dharam/Downloads/microEMA/HelperScripts/microEMAPredictionsMapping/mergeWithPredictionFile.R', echo=TRUE)
+source('C:/Users/Dharam/Downloads/microEMA/HelperScripts/microEMAPredictionsMapping/getPredictedActivitiesBeforePrompt.R', echo=TRUE)
+source('C:/Users/Dharam/Downloads/microEMA/HelperScripts/microEMAPredictionsMapping/reprepareMicroEMAFile.R', echo=TRUE)

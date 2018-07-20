@@ -10,8 +10,8 @@ uEMAFile <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/Responses_uE
 nrow(uEMAFile)
 head(uEMAFile)
 
-username = "uema02@micropa_com"
-endTime = as.POSIXct("2018-02-13 23:00:00") #### Always check the sheet for the
+username = "uema06@micropa_com"
+endTime = as.POSIXct("2018-02-28 23:00:00") #### Always check the sheet for the
 class(endTime)
 
 #### get a specific participant from 
