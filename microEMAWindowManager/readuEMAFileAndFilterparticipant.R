@@ -15,8 +15,8 @@ head(uEMAAllResponses)
 
 #### uEMA participant file data frame format should be "uEMAnResponses" and "uEMAnnAnsweredPrompts"
 
-username = "uema21@micropa_com"
-endTime = as.POSIXct("2018-07-16 23:00:00") #### Always check the sheet for the
+username = "uema23@micropa_com"
+endTime = as.POSIXct("2018-07-27 23:00:00") #### Always check the sheet for the
 class(endTime)
 
 #### get a specific participant from 

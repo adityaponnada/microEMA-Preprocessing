@@ -1,0 +1,77 @@
+---
+title: "AgreementPlots"
+author: "Aditya Ponnada"
+date: "July 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Import libraries
+
+```{r}
+library(plotly)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(reshape2)
+```
+
+
+#### Read the 10 sec mapping file
+
+```{r}
+mapped10Sec <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_10.csv")
+
+head(mapped10Sec)
+tail(mapped10Sec)
+```
+
+#### Convert date time to date time objects
+
+```{r}
+mapped10Sec$PROMPT_TIME <- as.POSIXct(mapped10Sec$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+head(mapped10Sec)
+
+
+mapped10Sec$PREDICTIONS <- 1
+mapped10Sec$RESPONSES <- 1
+```
+
+#### Plot activity types as time series for each participant
+
+```{r}
+user = "uema02@micropa_com"
+
+subset_1 <- subset(mapped10Sec, mapped10Sec$USER_ID == user)
+
+
+```
+
+```{r}
+predictionsPlot <- plot_ly()
+```
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

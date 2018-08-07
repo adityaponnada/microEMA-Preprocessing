@@ -13,4 +13,4 @@ countsEMADataFrame$TOTAL_WRIST_COUNTS <- countsEMADataFrame$COUNTS_SUM_WRIST_BEF
 
 head(countsEMADataFrame)
 
-write.csv(file = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema21/combinedData_600sec.csv", x = countsEMADataFrame, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
+write.csv(file = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema23/combinedData_600sec.csv", x = countsEMADataFrame, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
