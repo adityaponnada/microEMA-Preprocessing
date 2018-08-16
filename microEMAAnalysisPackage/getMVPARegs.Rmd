@@ -1,7 +1,7 @@
 ---
-title: "multipleLinearRegs"
+title: "getMVPARegs"
 author: "Aditya Ponnada"
-date: "August 6, 2018"
+date: "August 13, 2018"
 output: html_document
 editor_options: 
   chunk_output_type: inline
@@ -18,7 +18,6 @@ library(ggplot2)
 library(ordinal)
 library(lme4)
 ```
-
 
 #### Read 10 seconds file
 
@@ -40,11 +39,19 @@ uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-
 
 head(uEMAComboFile)
 
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
 
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
 
 
 head(uEMAComboFile)
@@ -55,7 +62,6 @@ class(uEMAComboFile$ACTIVITY_ORDINAL)
 levels(uEMAComboFile$ACTIVITY_ORDINAL)
 
 ```
-
 ```{r}
 model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
 summary(model_counts)
@@ -71,41 +77,11 @@ emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
 
 summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
-
 ```{r}
 library(MuMIn)
 
 r.squaredGLMM(model_counts)
 ```
-
-
-#### Remove vigorous
-```{r}
-uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
-
-levels(uEMANoVigorous$ACTIVITY_TYPE)
-
-model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMANoVigorous, REML = FALSE)
-summary(model_counts_1)
-
-coefs <- data.frame(coef(summary(model_counts_1)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coefs
-
-
-library(emmeans)
-library(multcomp)
-emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
-
-
-summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
-```
-
-```{r}
-
-```
-
-
 #### Read 30 seconds file
 
 ```{r}
@@ -126,11 +102,19 @@ uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-
 
 head(uEMAComboFile)
 
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
 
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
 
 
 head(uEMAComboFile)
@@ -141,6 +125,8 @@ class(uEMAComboFile$ACTIVITY_ORDINAL)
 levels(uEMAComboFile$ACTIVITY_ORDINAL)
 
 ```
+
+
 ```{r}
 model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
 summary(model_counts)
@@ -156,34 +142,10 @@ emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
 
 summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
-
-
 ```{r}
 library(MuMIn)
 
 r.squaredGLMM(model_counts)
-```
-
-#### Remove vigorous
-```{r}
-uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
-
-levels(uEMANoVigorous$ACTIVITY_TYPE)
-
-model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMANoVigorous, REML = FALSE)
-summary(model_counts_1)
-
-coefs <- data.frame(coef(summary(model_counts_1)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coefs
-
-
-library(emmeans)
-library(multcomp)
-emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
-
-
-summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
 
 #### Read 60 seconds file
@@ -206,11 +168,19 @@ uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-
 
 head(uEMAComboFile)
 
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
 
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
 
 
 head(uEMAComboFile)
@@ -221,6 +191,7 @@ class(uEMAComboFile$ACTIVITY_ORDINAL)
 levels(uEMAComboFile$ACTIVITY_ORDINAL)
 
 ```
+
 
 ```{r}
 model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
@@ -237,36 +208,14 @@ emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
 
 summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
-
-
 ```{r}
 library(MuMIn)
 
 r.squaredGLMM(model_counts)
 ```
 
-```{r}
-uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
-
-levels(uEMANoVigorous$ACTIVITY_TYPE)
-
-model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMANoVigorous, REML = FALSE)
-summary(model_counts_1)
-
-coefs <- data.frame(coef(summary(model_counts_1)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coefs
-
-
-library(emmeans)
-library(multcomp)
-emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
-
-
-summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
-```
-
 #### Read 150 seconds file
+
 ```{r}
 path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/OneFiftySecMappedData.csv"
 
@@ -285,11 +234,19 @@ uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-
 
 head(uEMAComboFile)
 
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
 
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
 
 
 head(uEMAComboFile)
@@ -323,30 +280,7 @@ library(MuMIn)
 r.squaredGLMM(model_counts)
 ```
 
-
-
-```{r}
-uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
-
-levels(uEMANoVigorous$ACTIVITY_TYPE)
-
-model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMANoVigorous, REML = FALSE)
-summary(model_counts_1)
-
-coefs <- data.frame(coef(summary(model_counts_1)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coefs
-
-
-library(emmeans)
-library(multcomp)
-emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
-
-
-summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
-```
-
-#### read 300 seconds file
+#### Read 300 seconds file
 
 ```{r}
 path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/ThreeHundSecMappedData.csv"
@@ -366,11 +300,19 @@ uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-
 
 head(uEMAComboFile)
 
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
 
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
 
 
 head(uEMAComboFile)
@@ -397,37 +339,13 @@ emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
 
 summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
-
-
 ```{r}
 library(MuMIn)
 
 r.squaredGLMM(model_counts)
 ```
 
-```{r}
-
-uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
-
-levels(uEMANoVigorous$ACTIVITY_TYPE)
-
-model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMANoVigorous, REML = FALSE)
-summary(model_counts_1)
-
-coefs <- data.frame(coef(summary(model_counts_1)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coefs
-
-
-library(emmeans)
-library(multcomp)
-emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
-
-
-summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
-```
-
-#### read 600 seconds file
+#### Read 600 seconds file
 
 ```{r}
 path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/SixHundSecMappedData.csv"
@@ -447,11 +365,19 @@ uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-
 
 head(uEMAComboFile)
 
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
 
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- 1
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- 2
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
-uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
 
 
 head(uEMAComboFile)
@@ -460,6 +386,7 @@ head(uEMAComboFile)
 uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
 class(uEMAComboFile$ACTIVITY_ORDINAL)
 levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
 ```
 
 ```{r}
@@ -477,33 +404,9 @@ emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
 
 summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
-
-
-
 ```{r}
 library(MuMIn)
 
 r.squaredGLMM(model_counts)
-```
-
-```{r}
-uEMANoVigorous <- uEMAComboFile[!uEMAComboFile$ACTIVITY_TYPE == "Vigorous", ]
-
-levels(uEMANoVigorous$ACTIVITY_TYPE)
-
-model_counts_1 <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMANoVigorous, REML = FALSE)
-summary(model_counts_1)
-
-coefs <- data.frame(coef(summary(model_counts_1)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coefs
-
-
-library(emmeans)
-library(multcomp)
-emmeans(model_counts_1, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
-
-
-summary(glht(model_counts_1, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
 ```
 

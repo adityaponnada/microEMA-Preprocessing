@@ -34,11 +34,14 @@ uEMAParticipantResponses$PROMPT_TIME <- as.POSIXct(uEMAParticipantResponses$PROM
 class(uEMAParticipantResponses$PROMPT_TIME)
 class(uEMAParticipantResponses$ANSWER_TIME)
 
+testPaper <- subset(uEMAParticipantResponses, ANSWER_TIME < endTime)
+
 toMatch <- c("MISSED", "DISMISSED")
 uEMAParticipantAnsweredPrompts <- uEMAParticipantResponses[- grep(paste(toMatch,collapse="|"), 
                                                                   uEMAParticipantResponses$ACTIVITY_TYPE),]
 
 uEMAParticipantAnsweredPrompts <- subset(uEMAParticipantAnsweredPrompts, ANSWER_TIME < endTime)
+
 
 head(uEMAParticipantAnsweredPrompts)
 levels(uEMAParticipantAnsweredPrompts$ACTIVITY_TYPE)

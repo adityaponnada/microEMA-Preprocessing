@@ -26,23 +26,26 @@ uEMAResponseRate$NO_DISMISS <- as.numeric(uEMAResponseRate$NO_DISMISS)
 uEMAResponseRate$NO_UNDO <- as.numeric(uEMAResponseRate$NO_UNDO)
 uEMAResponseRate$NO_UNDO_W1 <- as.numeric(uEMAResponseRate$NO_UNDO_W1)
 
+names(uEMAResponseRate) <- c("USER_ID", "Compliance", "Completion", "Response_time", "Undo_count_1", "Dismissal_time", "Dismiss_count", "Undo_count")
+
+
 #### Convert undo count to numeric
 # uEMAResponseRate$NO_UNDO <- as.numeric(uEMAResponseRate$NO_UNDO)
 # class(uEMAResponseRate$NO_UNDO)
 
 describe(uEMAResponseRate)
 
-RRSet <- c("USER_ID", "W1_COMPLIANCE", "W1_COMPLETION")
+RRSet <- c("USER_ID", "Compliance", "Completion")
 RRData <- uEMAResponseRate[RRSet]
 names(RRData) <- c("USER_ID", "Compliance", "Completion")
 
-RRTimeSet <- c("USER_ID", "W1_RESPONSE_TIME", "DISSMISS_TIME")
+RRTimeSet <- c("USER_ID", "Response_time", "Dismissal_time")
 RRTime <- uEMAResponseRate[RRTimeSet]
-names(RRTime) <- c("USER_ID", "ResponseTime", "DissmissTime")
+names(RRTime) <- c("USER_ID", "Response_time", "Dismissal_time")
 
-RRCountSet <- c("USER_ID", "NO_UNDO_W1", "NO_DISMISS")
+RRCountSet <- c("USER_ID", "Undo_count", "Dismiss_count")
 RRCount <- uEMAResponseRate[RRCountSet]
-names(RRCount) <- c("USER_ID", "UndoCounts", "DissmissCounts")
+names(RRCount) <- c("USER_ID", "Undo_count", "Dismiss_count")
 
 #### Plot compliance boxplot
 # complianceSet <- c("USER_ID", "W1_COMPLIANCE")
@@ -60,24 +63,27 @@ names(RRCount) <- c("USER_ID", "UndoCounts", "DissmissCounts")
 meltRRSet <- melt(RRData, measure.vars = c("Compliance", "Completion"))
 # meltCompliance <- melt(subsetCompliance, measure.vars=c("W1_COMPLIANCE"))
 # meltCompletion <- melt(subsetCompletion, measure.vars=c("W1_COMPLETION"))
-meltResponseTime <- melt(RRTime, measure.vars=c("ResponseTime", "DissmissTime"))
+meltResponseTime <- melt(RRTime, measure.vars=c("Response_time", "Dismissal_time"))
 
-meltResponseCounts <- melt(RRCount, measure.vars = c("UndoCounts", "DissmissCounts"))
+meltResponseCounts <- melt(RRCount, measure.vars = c("Undo_count", "Dismiss_count"))
 
 RRPlot <- ggplot(meltRRSet, aes(x=variable, y=value)) +
   geom_boxplot() +
   ggtitle("Response rates (%)") +
-  labs(x="Week 1 response rates", y="Response rate(%)")
+  labs(x = "(a)", y="Response rate(%)")+ theme_bw() +
+  theme(text = element_text(size=20))
 
 RRTimePlot <- ggplot(meltResponseTime, aes(x=variable, y=value)) +
   geom_boxplot() +
   ggtitle("Response times (s)") +
-  labs(x="Week 1 response times", y="Response times (s)")
+  labs(x = "(b)", y="Response times (s)")+ theme_bw()+
+  theme(text = element_text(size=20))
 
 RRCountPlot <- ggplot(meltResponseCounts, aes(x=variable, y=value)) +
   geom_boxplot() +
-  ggtitle("Undo and dissmissal counts") +
-  labs(x="Week 1 undo and dissmissal counts", y="No. of occurences")
+  ggtitle("Undo and dismissal counts") +
+  labs(x = "(b)", y="No. of occurences")+ theme_bw()+
+  theme(text = element_text(size=20))
 
 # compliancePlot <- ggplot(meltCompliance, aes(x=variable,y=value)) + 
 #   geom_boxplot()+
@@ -142,5 +148,6 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   }
 }
 
-multiplot(RRPlot, RRTimePlot, RRCountPlot,cols=3)
+#multiplot(RRPlot, RRTimePlot, RRCountPlot,cols=3)
+multiplot(RRPlot, RRCountPlot,cols=2)
 
