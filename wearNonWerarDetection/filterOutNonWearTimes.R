@@ -1,5 +1,5 @@
 
-uEMAFile <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema21/combinedData_600sec.csv", header = TRUE, sep = ",")
+uEMAFile <- read.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema23/combinedData_600sec.csv", header = TRUE, sep = ",")
 
 uEMAFile$PROMPT_TIME <- as.POSIXct(uEMAFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
 uEMAFile$ANSWER_TIME <- as.POSIXct(uEMAFile$ANSWER_TIME, format = "%Y-%m-%d %H:%M:%OS")
@@ -15,4 +15,4 @@ for (i in 1:nrow(nonWearFile)){
 }
 
 
-write.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema21/combinedData_600sec.csv", x = uEMAFile, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
+write.csv("C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/uema23/combinedData_600sec.csv", x = uEMAFile, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")

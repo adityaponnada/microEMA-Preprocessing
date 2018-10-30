@@ -1,0 +1,207 @@
+---
+title: "multipleRepeatedCorsFile"
+author: "Aditya Ponnada"
+date: "July 20, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+#### Import libraries
+
+```{r}
+library(psych)
+library(plotly)
+library(reshape2)
+library(MASS)
+library(dplyr)
+library(ggplot2)
+library(rmcorr)
+```
+
+
+##### Read 10 sec file
+
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get repeated measures correlation:
+
+```{r}
+x10 <- rmcorr(USER_ID, ACTIVITY_NUMERIC, COUNTS_SUM_ANKLE_BEFORE, combinedFile, CIs = c("analytic",
+                                                                                 "bootstrap"), nreps = 100, bstrap.out = F)
+
+x10
+```
+
+##### Read 30 sec file
+
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/thirtySecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get repeated measures correlation:
+
+```{r}
+x30 <- rmcorr(USER_ID, ACTIVITY_NUMERIC, COUNTS_SUM_ANKLE_BEFORE, combinedFile, CIs = c("analytic",
+                                                                                 "bootstrap"), nreps = 100, bstrap.out = F)
+
+x30
+```
+
+##### Read 60 sec file
+
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/sixtySecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get repeated measures correlation:
+
+```{r}
+x60 <- rmcorr(USER_ID, ACTIVITY_NUMERIC, COUNTS_SUM_ANKLE_BEFORE, combinedFile, CIs = c("analytic",
+                                                                                 "bootstrap"), nreps = 100, bstrap.out = F)
+
+x60
+```
+
+##### Read 150 sec file
+
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/OneFiftySecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get repeated measures correlation:
+
+```{r}
+x150 <- rmcorr(USER_ID, ACTIVITY_NUMERIC, COUNTS_SUM_ANKLE_BEFORE, combinedFile, CIs = c("analytic",
+                                                                                 "bootstrap"), nreps = 100, bstrap.out = F)
+
+x150
+```
+
+##### Read 300 sec file
+
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/ThreeHundSecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get repeated measures correlation:
+
+```{r}
+x300 <- rmcorr(USER_ID, ACTIVITY_NUMERIC, COUNTS_SUM_ANKLE_BEFORE, combinedFile, CIs = c("analytic",
+                                                                                 "bootstrap"), nreps = 100, bstrap.out = F)
+
+x300
+```
+
+##### Read 600 sec file
+
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/SixHundSecMappedData.csv"
+
+combinedFile <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(combinedFile)
+tail(combinedFile)
+
+
+### Remove NAs from the ankle before and after columns
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_BEFORE),]
+combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+combinedFile$PROMPT_TIME <- as.POSIXct(combinedFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get repeated measures correlation:
+
+```{r}
+x600 <- rmcorr(USER_ID, ACTIVITY_NUMERIC, COUNTS_SUM_ANKLE_BEFORE, combinedFile, CIs = c("analytic",
+                                                                                 "bootstrap"), nreps = 100, bstrap.out = F)
+
+x600
+```
+
+
+#### Add r values into a data frame:
+
+```{r}
+rDataFrame <- data.frame(c(10, 30, 60, 150, 300, 600), c(x10$r, x30$r, x60$r, x150$r, x300$r, x600$r))
+
+names(rDataFrame) <- c("Time", "Corr")
+```
+
+#### Plot trends
+
+```{r}
+ggplot(rDataFrame, aes(x=Time, y=Corr)) + geom_line() +
+  scale_x_continuous(name="Seconds before the prompt", limits=c(0, 600)) +
+  scale_y_continuous(name="Repeated measures correlation", limits=c(0.5, 0.75))
+```
+

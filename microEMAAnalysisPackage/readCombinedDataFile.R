@@ -6,7 +6,7 @@ library(dplyr)
 library(ggplot2)
 
 
-## read file
+## read file --  already has non wear removed
 
 filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/thirtySecMappedData.csv"
 

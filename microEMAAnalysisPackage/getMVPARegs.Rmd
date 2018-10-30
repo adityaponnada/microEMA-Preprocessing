@@ -1,0 +1,412 @@
+---
+title: "getMVPARegs"
+author: "Aditya Ponnada"
+date: "August 13, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+#### Import libraries
+
+```{r}
+library(psych)
+library(MASS)
+library(reshape2)
+library(plotly)
+library(ggplot2)
+library(ordinal)
+library(lme4)
+```
+
+#### Read 10 seconds file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/tenSecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+
+
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
+
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+```{r}
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+```{r}
+library(MuMIn)
+
+r.squaredGLMM(model_counts)
+```
+#### Read 30 seconds file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/thirtySecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+
+
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
+
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+
+
+```{r}
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+```{r}
+library(MuMIn)
+
+r.squaredGLMM(model_counts)
+```
+
+#### Read 60 seconds file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/sixtySecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+
+
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
+
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+
+
+```{r}
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+```{r}
+library(MuMIn)
+
+r.squaredGLMM(model_counts)
+```
+
+#### Read 150 seconds file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/OneFiftySecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+
+
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
+
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+
+```{r}
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+
+```{r}
+library(MuMIn)
+
+r.squaredGLMM(model_counts)
+```
+
+#### Read 300 seconds file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/ThreeHundSecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+
+
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
+
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+
+```{r}
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+```{r}
+library(MuMIn)
+
+r.squaredGLMM(model_counts)
+```
+
+#### Read 600 seconds file
+
+```{r}
+path = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/SixHundSecMappedData.csv"
+
+uEMAComboFile <- read.csv(path, sep = ",", header = TRUE)
+
+head(uEMAComboFile)
+tail(uEMAComboFile)
+
+
+### Remove NAs from the ankle before and after columns
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_BEFORE),]
+uEMAComboFile <- uEMAComboFile[!is.na(uEMAComboFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+uEMAComboFile$PROMPT_TIME <- as.POSIXct(uEMAComboFile$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+
+head(uEMAComboFile)
+
+uEMAComboFile$ACTIVITY_TYPE_II <- NA
+
+levels(uEMAComboFile$ACTIVITY_TYPE_II) <- c("Sedentary", "Light/Standing", "MVPA")
+
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Moderate/Walking"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- "MVPA"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Sedentary"] <- "Sedentary"
+uEMAComboFile$ACTIVITY_TYPE_II[uEMAComboFile$ACTIVITY_TYPE == "Light/Standing"] <- "Light/Standing"
+
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Sedentary"] <- 1
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "Light/Standing"] <- 2
+uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE_II == "MVPA"] <- 3
+#uEMAComboFile$ACTIVITY_ORDINAL[uEMAComboFile$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+
+head(uEMAComboFile)
+
+
+uEMAComboFile$ACTIVITY_ORDINAL <- factor(uEMAComboFile$ACTIVITY_ORDINAL, ordered = T)
+class(uEMAComboFile$ACTIVITY_ORDINAL)
+levels(uEMAComboFile$ACTIVITY_ORDINAL)
+
+```
+
+```{r}
+model_counts <- lmer(COUNTS_SUM_ANKLE_BEFORE~ACTIVITY_ORDINAL + (1 | USER_ID), data = uEMAComboFile, REML = FALSE)
+summary(model_counts)
+
+coefs <- data.frame(coef(summary(model_counts)))
+coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
+coefs
+
+library(emmeans)
+library(multcomp)
+emmeans(model_counts, list(pairwise ~ ACTIVITY_ORDINAL), adjust = "tukey")
+
+
+summary(glht(model_counts, linfct = mcp(ACTIVITY_ORDINAL = "Tukey")), test = adjusted("holm"))
+```
+```{r}
+library(MuMIn)
+
+r.squaredGLMM(model_counts)
+```
+

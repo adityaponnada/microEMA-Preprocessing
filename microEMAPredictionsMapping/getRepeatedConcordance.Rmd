@@ -1,0 +1,268 @@
+---
+title: "RepeatedConcordance"
+author: "Aditya Ponnada"
+date: "July 21, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+#### Import libraries
+```{r}
+library(dplyr)
+library(plyr)
+library(MASS)
+library(psych)
+library(rmcorr)
+library(cccrm)
+library(caret)
+library(irr)
+```
+
+#### read predictions mapping file - 10s
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_10.csv"
+
+predictionsMap <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(predictionsMap)
+tail(predictionsMap)
+
+
+### Remove NAs from the ankle before and after columns
+# predictionsMap <- predictionsMap[!is.na(predictionsMap$COUNTS_SUM_ANKLE_BEFORE),]
+# combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+predictionsMap$PROMPT_TIME <- as.POSIXct(predictionsMap$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Repeated concordance measure
+```{r}
+# ccclon(predictionsMap,PREDICTED_ACTIVITY_TYPE, ACTIVITY_TYPE, USER_ID, covar = NULL, rho = 0, cl = 0.95)
+
+##y10
+```
+
+#### Get confusion matrices
+
+```{r}
+
+keep <- c("ACTIVITY_TYPE", "PREDICTED_ACTIVITY_TYPE")
+
+
+
+u <- union(predictionsMap$ACTIVITY_TYPE,predictionsMap$PREDICTED_ACTIVITY_TYPE)
+t <- table(factor(predictionsMap$ACTIVITY_TYPE, u), factor(predictionsMap$PREDICTED_ACTIVITY_TYPE, u))
+y10 <- confusionMatrix(t)
+
+y10
+```
+
+#### read predictions mapping file - 30s
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_30.csv"
+
+predictionsMap <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(predictionsMap)
+tail(predictionsMap)
+
+
+### Remove NAs from the ankle before and after columns
+# predictionsMap <- predictionsMap[!is.na(predictionsMap$COUNTS_SUM_ANKLE_BEFORE),]
+# combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+predictionsMap$PROMPT_TIME <- as.POSIXct(predictionsMap$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get confusion matrices
+
+```{r}
+
+keep <- c("ACTIVITY_TYPE", "PREDICTED_ACTIVITY_TYPE")
+
+
+
+u <- union(predictionsMap$ACTIVITY_TYPE,predictionsMap$PREDICTED_ACTIVITY_TYPE)
+t <- table(factor(predictionsMap$ACTIVITY_TYPE, u), factor(predictionsMap$PREDICTED_ACTIVITY_TYPE, u))
+y30 <- confusionMatrix(t)
+
+y30
+```
+
+#### read predictions mapping file - 60s
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_60.csv"
+
+predictionsMap <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(predictionsMap)
+tail(predictionsMap)
+
+
+### Remove NAs from the ankle before and after columns
+# predictionsMap <- predictionsMap[!is.na(predictionsMap$COUNTS_SUM_ANKLE_BEFORE),]
+# combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+predictionsMap$PROMPT_TIME <- as.POSIXct(predictionsMap$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get confusion matrices
+
+```{r}
+
+keep <- c("ACTIVITY_TYPE", "PREDICTED_ACTIVITY_TYPE")
+
+
+
+u <- union(predictionsMap$ACTIVITY_TYPE,predictionsMap$PREDICTED_ACTIVITY_TYPE)
+t <- table(factor(predictionsMap$ACTIVITY_TYPE, u), factor(predictionsMap$PREDICTED_ACTIVITY_TYPE, u))
+y60 <- confusionMatrix(t)
+
+y60
+```
+
+#### read predictions mapping file - 150s
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_150.csv"
+
+predictionsMap <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(predictionsMap)
+tail(predictionsMap)
+
+
+### Remove NAs from the ankle before and after columns
+# predictionsMap <- predictionsMap[!is.na(predictionsMap$COUNTS_SUM_ANKLE_BEFORE),]
+# combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+predictionsMap$PROMPT_TIME <- as.POSIXct(predictionsMap$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get confusion matrices
+
+```{r}
+
+keep <- c("ACTIVITY_TYPE", "PREDICTED_ACTIVITY_TYPE")
+
+
+
+u <- union(predictionsMap$ACTIVITY_TYPE,predictionsMap$PREDICTED_ACTIVITY_TYPE)
+t <- table(factor(predictionsMap$ACTIVITY_TYPE, u), factor(predictionsMap$PREDICTED_ACTIVITY_TYPE, u))
+y150 <- confusionMatrix(t)
+
+y150
+```
+
+#### read predictions mapping file - 300s
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_300.csv"
+
+predictionsMap <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(predictionsMap)
+tail(predictionsMap)
+
+
+### Remove NAs from the ankle before and after columns
+# predictionsMap <- predictionsMap[!is.na(predictionsMap$COUNTS_SUM_ANKLE_BEFORE),]
+# combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+predictionsMap$PROMPT_TIME <- as.POSIXct(predictionsMap$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+#### Get confusion matrices
+
+```{r}
+
+keep <- c("ACTIVITY_TYPE", "PREDICTED_ACTIVITY_TYPE")
+
+
+
+u <- union(predictionsMap$ACTIVITY_TYPE,predictionsMap$PREDICTED_ACTIVITY_TYPE)
+t <- table(factor(predictionsMap$ACTIVITY_TYPE, u), factor(predictionsMap$PREDICTED_ACTIVITY_TYPE, u))
+y300 <- confusionMatrix(t)
+
+y300
+```
+
+#### read predictions mapping file - 600s
+```{r}
+filePath = "C:/Users/Dharam/Downloads/microEMA/StudyFiles/CombinedData/predictions_600.csv"
+
+predictionsMap <- read.csv(filePath, sep = ",", header = TRUE)
+
+head(predictionsMap)
+tail(predictionsMap)
+
+
+### Remove NAs from the ankle before and after columns
+# predictionsMap <- predictionsMap[!is.na(predictionsMap$COUNTS_SUM_ANKLE_BEFORE),]
+# combinedFile <- combinedFile[!is.na(combinedFile$COUNTS_SUM_ANKLE_AFTER),]
+
+### Convert prompt time to date time object
+predictionsMap$PROMPT_TIME <- as.POSIXct(predictionsMap$PROMPT_TIME, format = "%Y-%m-%d %H:%M:%OS")
+```
+
+
+#### Get confusion matrices
+
+```{r}
+
+keep <- c("ACTIVITY_TYPE", "PREDICTED_ACTIVITY_TYPE")
+
+
+
+u <- union(predictionsMap$ACTIVITY_TYPE,predictionsMap$PREDICTED_ACTIVITY_TYPE)
+t <- table(factor(predictionsMap$ACTIVITY_TYPE, u), factor(predictionsMap$PREDICTED_ACTIVITY_TYPE, u))
+y600 <- confusionMatrix(t)
+
+y600
+```
+
+```{r}
+library(ordinal)
+
+predictionsMap$ACTIVITY_ORDINAL[predictionsMap$ACTIVITY_TYPE == "Sedentary"] <- 1
+predictionsMap$ACTIVITY_ORDINAL[predictionsMap$ACTIVITY_TYPE == "Light/Standing"] <- 2
+predictionsMap$ACTIVITY_ORDINAL[predictionsMap$ACTIVITY_TYPE == "Moderate/Walking"] <- 3
+predictionsMap$ACTIVITY_ORDINAL[predictionsMap$ACTIVITY_TYPE == "Vigorous"] <- 4
+
+head(predictionsMap)
+
+
+
+predictionsMap$PREDICTED_ORDINAL[predictionsMap$PREDICTED_ACTIVITY_TYPE == "Sedentary"] <- 1
+predictionsMap$PREDICTED_ORDINAL[predictionsMap$PREDICTED_ACTIVITY_TYPE == "Light/Standing"] <- 2
+predictionsMap$PREDICTED_ORDINAL[predictionsMap$PREDICTED_ACTIVITY_TYPE == "Moderate/Walking"] <- 3
+predictionsMap$PREDICTED_ORDINAL[predictionsMap$PREDICTED_ACTIVITY_TYPE == "Vigorous"] <- 4
+
+head(predictionsMap)
+
+
+predictionsMap$ACTIVITY_ORDINAL <- factor(predictionsMap$ACTIVITY_ORDINAL, ordered = T)
+
+predictionsMap$PREDICTED_ORDINAL <- factor(predictionsMap$PREDICTED_ORDINAL, ordered = T)
+
+
+class(predictionsMap$ACTIVITY_ORDINAL)
+levels(predictionsMap$ACTIVITY_ORDINAL)
+
+class(predictionsMap$PREDICTED_ORDINAL)
+levels(predictionsMap$PREDICTED_ORDINAL)
+
+```
+
+```{r}
+model1 <- clmm(PREDICTED_ORDINAL~ACTIVITY_ORDINAL + (1|USER_ID), data = predictionsMap, Hess = T, nAGQ = 1)
+
+model1
+
+summary(model1)
+```
+
